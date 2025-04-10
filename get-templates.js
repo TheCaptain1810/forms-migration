@@ -5,7 +5,7 @@ const BASE_URL = process.env.BASE_URL;
 const PROJECT_ID = process.env.PROJECT_ID;
 const AUTH_TOKEN = `Bearer ${process.env.AUTH_TOKEN}`;
 
-async function fetchFormTemplates() {
+async function fetchFormTemplateId() {
   try {
     const response = await axios.get(
       `${BASE_URL}/projects/${PROJECT_ID}/form-templates`,
@@ -21,14 +21,15 @@ async function fetchFormTemplates() {
       }
     );
 
-    const dailyLogTemplateId = response.data.data.filter(
+    const templates = response.data;
+
+    const dailyLogTemplateId = templates.data.filter(
       (template) =>
         template.templateType === "pg.template_type.daily_report" &&
         template.status === "active"
     )[0].id;
 
-    console.log("Form templates fetched successfully!");
-    console.log("Templates:", dailyLogTemplateId);
+    console.log("ID", dailyLogTemplateId);
 
     return dailyLogTemplateId;
   } catch (error) {
@@ -45,4 +46,6 @@ async function fetchFormTemplates() {
   }
 }
 
-module.exports = { fetchFormTemplates };
+// fetchFormTemplateId();
+
+module.exports = { fetchFormTemplateId };
