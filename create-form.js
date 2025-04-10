@@ -1,16 +1,16 @@
 const axios = require("axios");
 require("dotenv").config();
 
+const fetchFormTemplateId = require("./get-templates").fetchFormTemplates;
+
 const BASE_URL = process.env.BASE_URL;
 const PROJECT_ID = process.env.PROJECT_ID;
-// TODO: Make this dynamic, so that we can use this same code for multiple templates
-const TEMPLATE_ID = "11764123-86f4-421f-9650-ebd3befcfbe6";
 const AUTH_TOKEN = `Bearer ${process.env.AUTH_TOKEN}`;
 
 const formData = {
   assigneeId: "PUJXLNP3U8TM",
   assigneeType: "user",
-  name: "Daily Logs-09 April 2025",
+  name: "Daily Logs-10 April 2025",
   description: "For Sam Subcontractor",
   formDate: "2020-11-20",
   notes: "Installed 25 units",
@@ -18,6 +18,7 @@ const formData = {
 
 async function createForm() {
   try {
+    const TEMPLATE_ID = await fetchFormTemplateId();
     const response = await axios.post(
       `${BASE_URL}/projects/${PROJECT_ID}/form-templates/${TEMPLATE_ID}/forms`,
       formData,

@@ -1,75 +1,48 @@
-const express = require("express");
-const { acc2LeggedAuth, getAcc3LeggedToken } = require("./auth");
+const axios = require("axios");
+require("dotenv").config();
 
-const app = express();
-const PORT = process.env.PORT || 5000;
+const BASE_URL = process.env.BASE_URL;
+const PROJECT_ID = process.env.PROJECT_ID;
+const AUTH_TOKEN = `Bearer ${process.env.AUTH_TOKEN}`;
 
-app.get("/form-templates", async (req, res) => {
+async function fetchFormTemplates() {
   try {
-    const accessToken = await acc2LeggedAuth();
-    const url = ` https://developer.api.autodesk.com/construction/forms/v1/projects/de199d13-ecfb-4b83-9b33-10d843b0d452/form-templates`;
+    const response = await axios.get(
+      `${BASE_URL}/projects/${PROJECT_ID}/form-templates`,
+      {
+        headers: {
+          Authorization: AUTH_TOKEN,
+          "Content-Type": "application/json",
+        },
+        params: {
+          limit: 50,
+          offset: 0,
+        },
+      }
+    );
 
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+    const dailyLogTemplateId = response.data.data.filter(
+      (template) =>
+        template.templateType === "pg.template_type.daily_report" &&
+        template.status === "active"
+    )[0].id;
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(
-        `Error fetching form templates: ${JSON.stringify(errorData)}`
-      );
+    console.log("Form templates fetched successfully!");
+    console.log("Templates:", dailyLogTemplateId);
+
+    return dailyLogTemplateId;
+  } catch (error) {
+    console.error("Error fetching form templates:");
+
+    if (error.response) {
+      console.error("Status:", error.response.status);
+      console.error("Data:", error.response.data);
+    } else {
+      console.error("Error:", error.message);
     }
 
-    const data = await response.json();
-    res.status(200).json(data);
-  } catch (error) {
-    console.error("Error fetching form templates:", error.message);
-    res.status(500).json({
-      error: "Failed to fetch form templates",
-      details: error.message,
-    });
+    throw error;
   }
-});
+}
 
-app.get("/project-ids", async (req, res) => {
-  try {
-    const accessToken = await acc2LeggedAuth();
-    const accountId = "47e894b9-4d04-44b9-8eb6-9564cbd3ade8";
-    const url = `https://developer.api.autodesk.com/construction/admin/v1/accounts/${accountId}/projects?&limit=200`;
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        "Content-Type": "application/json",
-      },
-    });
-
-    if (!response.ok) {
-      const errorData = await response.json();
-      throw new Error(`Error fetching projects: ${JSON.stringify(errorData)}`);
-    }
-
-    const data = await response.json();
-    console.log("Fetched project IDs:", data);
-    const projectIds = data.results.map((project) => ({
-      id: project.id,
-      name: project.name,
-    }));
-
-    res.status(200).json(projectIds);
-  } catch (error) {
-    console.error("Error fetching project IDs:", error.message);
-    res.status(500).json({
-      error: "Failed to fetch project IDs",
-      details: error.message,
-    });
-  }
-});
-
-app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
-});
+module.exports = { fetchFormTemplates };

@@ -1,10 +1,11 @@
 const axios = require("axios");
 
-const baseUrl = "https://developer.api.autodesk.com/construction/forms/v1";
-const projectId = "de199d13-ecfb-4b83-9b33-10d843b0d452";
+const BASE_URL = process.env.BASE_URL;
+const PROJECT_ID = process.env.PROJECT_ID;
+const AUTH_TOKEN = `Bearer ${process.env.AUTH_TOKEN}`;
+
+// TODO: Replace this with dynamic form ID fetching logic
 const formId = "ffeacd5b-6958-4cfa-8f8c-89a48040ee11";
-const authToken =
-  "Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IlhrUFpfSmhoXzlTYzNZS01oRERBZFBWeFowOF9SUzI1NiIsInBpLmF0bSI6ImFzc2MifQ.eyJzY29wZSI6WyJkYXRhOnJlYWQiLCJkYXRhOndyaXRlIiwiZGF0YTpjcmVhdGUiLCJhY2NvdW50OnJlYWQiLCJhY2NvdW50OndyaXRlIl0sImNsaWVudF9pZCI6IjZURXUwMjVzY1RKdXNJUjR5cVZTUE5HYkpVMVZha0JOQ21Db1h1eVhSaG9ydm5EUSIsImlzcyI6Imh0dHBzOi8vZGV2ZWxvcGVyLmFwaS5hdXRvZGVzay5jb20iLCJhdWQiOiJodHRwczovL2F1dG9kZXNrLmNvbSIsImp0aSI6IlNGMmJNbDVSNUNLVXFBZzJOZTVDU0xzRGlKUDN0ZHBxWmlkVzhPaXc4eXdOamZBRkZYOGVTQjZRcWlqSnNnSWQiLCJleHAiOjE3NDQxODE0MDEsInVzZXJpZCI6IlBVSlhMTlAzVThUTSJ9.PGw1vwv7FJcen1y76lw4c2K7V684fjemSjtsmPGfYbBS8C0eGvpauKOrPTn3T-K8LxVV3XFjgunqIcxAKB7iv78VcOc8aYZUAJFhptGH1M9iuqNiACcQWQdZag4tQT5kK0C0eirph_Rh_F87VrMkJXQ5d_Kevqf4W0ZzsF4zwsIY8PjlaxOMz0I6YzfWztwVlD-peI2peSZ2GuFAjndKhTEnX0knTfxHBpqQ_lQM3gADtgTDqZhbwH5Mn86FQYcCdqz3g3r-Yui4npMW8N2CLtQdef296-4TYmUMj_orFwl3zO0wMPtAyAkB7vzwItIhLWlTm4Fu2BuQ0buH0p6N6A";
 
 const updateData = {
   customValues: [
@@ -34,11 +35,11 @@ const updateData = {
 async function updateFormValues() {
   try {
     const response = await axios.put(
-      `${baseUrl}/projects/${projectId}/forms/${formId}/values:batch-update`,
+      `${BASE_URL}/projects/${PROJECT_ID}/forms/${formId}/values:batch-update`,
       updateData,
       {
         headers: {
-          Authorization: authToken,
+          Authorization: AUTH_TOKEN,
           "Content-Type": "application/json",
         },
       }
