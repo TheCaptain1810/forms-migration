@@ -1,7 +1,7 @@
 const axios = require("axios");
 require("dotenv").config();
 
-const fetchFormTemplateId = require("./get-templates").fetchFormTemplates;
+const fetchFormTemplateId = require("./get-templates").fetchFormTemplateId;
 
 const BASE_URL = process.env.BASE_URL;
 const PROJECT_ID = process.env.PROJECT_ID;
