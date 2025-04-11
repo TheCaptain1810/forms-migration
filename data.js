@@ -1,5 +1,7 @@
 // Change this data according to the template you are using to create the form
 
+const templateName = "Daily Logs";
+
 const formData = {
   assigneeId: "PUJXLNP3U8TM",
   assigneeType: "user",
@@ -35,4 +37,4 @@ const updateData = {
   ],
 };
 
-module.exports = { formData, updateData };
+module.exports = { templateName, formData, updateData };

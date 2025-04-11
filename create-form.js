@@ -1,7 +1,7 @@
 const axios = require("axios");
 require("dotenv").config();
 
-const { formData, updateData } = require("../data");
+const { templateName, formData, updateData } = require("./data");
 
 const BASE_URL = process.env.BASE_URL;
 const PROJECT_ID = process.env.PROJECT_ID;
@@ -25,16 +25,16 @@ async function createForm() {
 
     const templates = getTemplatesResponse.data;
 
-    const dailyLogTemplateId = templates.data.filter(
+    const { id, name } = templates.data.filter(
       (template) =>
-        template.templateType === "Material Inspection Request" &&
-        template.status === "active"
-    )[0].id;
+        template.name === templateName && template.status === "active"
+    )[0];
 
-    console.log("Template ID", dailyLogTemplateId);
+    console.log("Template ID", id);
+    console.log("Template Name", name);
 
     const createFormResponse = await axios.post(
-      `${BASE_URL}/projects/${PROJECT_ID}/form-templates/${dailyLogTemplateId}/forms`,
+      `${BASE_URL}/projects/${PROJECT_ID}/form-templates/${id}/forms`,
       formData,
       {
         headers: {
