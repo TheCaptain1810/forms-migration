@@ -5,11 +5,11 @@
   "license": "ISC",
   "author": "",
   "type": "commonjs",
-  "main": "add-custom-values.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create-daily-log": "node daily-logs/add-custom-values.js",
-    "create-material-inspection": "node inspections/material-inspection/add-custom-values.js"
+    "create-daily-log": "node daily-logs/create-form.js",
+    "create-material-inspection": "node inspections/material-inspections/create-form.js",
+    "create-work-inspection": "node inspections/work-inspections/create-form.js"
   },
   "dependencies": {
     "axios": "^1.8.4",
