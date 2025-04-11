@@ -1,7 +1,7 @@
 const axios = require("axios");
 require("dotenv").config();
 
-const { templateName, formData, updateData } = require("./data");
+const { templateName, formData, updateData } = require("./data/form-data");
 
 const BASE_URL = process.env.BASE_URL;
 const PROJECT_ID = process.env.PROJECT_ID;
