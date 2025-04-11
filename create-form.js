@@ -10,7 +10,7 @@ const AUTH_TOKEN = `Bearer ${process.env.AUTH_TOKEN}`;
 const formData = {
   assigneeId: "PUJXLNP3U8TM",
   assigneeType: "user",
-  name: "Daily Logs-10 April 2025",
+  name: "Daily Logs-11 April 2025",
   description: "For Sam Subcontractor",
   formDate: "2020-11-20",
   notes: "Installed 25 units",
@@ -31,7 +31,17 @@ async function createForm() {
     );
 
     console.log("Form created successfully!");
-    console.log("Response:", response.data);
+    // console.log("Response:", response.data);
+
+    const formId = response.data.id;
+    const customFieldIds = response.data.customValues.map(
+      (field) => field.fieldId
+    );
+
+    console.log("Form ID:", formId);
+    console.log("Custom Field IDs:", customFieldIds);
+
+    return { formId, customFieldIds };
   } catch (error) {
     console.error("Error creating form:");
     if (error.response) {
@@ -43,4 +53,6 @@ async function createForm() {
   }
 }
 
-createForm();
+// createForm();
+
+module.exports = { createForm };

@@ -1,11 +1,11 @@
 const axios = require("axios");
+require("dotenv").config();
+
+const createForm = require("./create-form").createForm;
 
 const BASE_URL = process.env.BASE_URL;
 const PROJECT_ID = process.env.PROJECT_ID;
 const AUTH_TOKEN = `Bearer ${process.env.AUTH_TOKEN}`;
-
-// TODO: Replace this with dynamic form ID fetching logic
-const formId = "ffeacd5b-6958-4cfa-8f8c-89a48040ee11";
 
 const updateData = {
   customValues: [
@@ -34,6 +34,7 @@ const updateData = {
 
 async function updateFormValues() {
   try {
+    const { formId } = await createForm();
     const response = await axios.put(
       `${BASE_URL}/projects/${PROJECT_ID}/forms/${formId}/values:batch-update`,
       updateData,

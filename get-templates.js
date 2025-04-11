@@ -29,7 +29,7 @@ async function fetchFormTemplateId() {
         template.status === "active"
     )[0].id;
 
-    console.log("ID", dailyLogTemplateId);
+    console.log("Template ID", dailyLogTemplateId);
 
     return dailyLogTemplateId;
   } catch (error) {
