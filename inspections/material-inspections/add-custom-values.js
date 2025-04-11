@@ -7,7 +7,9 @@ const BASE_URL = process.env.BASE_URL;
 const PROJECT_ID = process.env.PROJECT_ID;
 const AUTH_TOKEN = `Bearer ${process.env.AUTH_TOKEN}`;
 
+// TODO: match these custom values with MIR template.
 const updateData = {
+  // check if there is some way to make this fieldId fetching dynamic as well
   customValues: [
     {
       fieldId: "79110a45-afcb-43dc-a3c3-2945a0ec4160",

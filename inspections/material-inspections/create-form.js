@@ -10,7 +10,7 @@ const AUTH_TOKEN = `Bearer ${process.env.AUTH_TOKEN}`;
 const formData = {
   assigneeId: "PUJXLNP3U8TM",
   assigneeType: "user",
-  name: "Daily Logs-11 April 2025",
+  name: "Material Inspection Request #1",
   description: "For Sam Subcontractor",
   formDate: "2020-11-20",
   notes: "Installed 25 units",
@@ -53,6 +53,6 @@ async function createForm() {
   }
 }
 
-// createForm();
+createForm();
 
 module.exports = { createForm };

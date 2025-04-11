@@ -8,8 +8,8 @@
   "main": "add-custom-values.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create": "node create-form.js",
-    "add-custom-values": "node add-custom-values.js"
+    "create-daily-log": "node daily-logs/add-custom-values.js",
+    "create-material-inspection": "node inspections/material-inspection/add-custom-values.js"
   },
   "dependencies": {
     "axios": "^1.8.4",
