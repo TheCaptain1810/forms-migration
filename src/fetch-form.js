@@ -10,6 +10,7 @@ const accessToken = process.env.PROCORE_ACCESS_TOKEN;
 const companyId = "YOUR_COMPANY_ID";
 const projectId = "YOUR_PROJECT_ID";
 const logDate = "2025-04-14";
+const dailyLogsUrl = `https://api.procore.com/vapid/projects/${projectId}/daily_logs?company_id=${companyId}&log_date=${logDate}`;
 
 // const tokenUrl = `${process.env.PROCORE_SANDBOX_BASE_URL}/oauth/token`;
 
@@ -33,34 +34,30 @@ const logDate = "2025-04-14";
 
 async function fetchDailyLogs() {
   try {
-    const authorizer = {
-      accessToken: () => accessToken,
-      get: () => ({ access_token: accessToken }),
-    };
-    const client = sdk.client(authorizer);
-
-    const response = await client.get(
-      {
-        base: `/vapid/projects/${projectId}/daily_logs`,
-        qs: {
-          company_id: companyId,
-          log_date: logDate,
-        },
+    const response = await fetch(dailyLogsUrl, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        "Content-Type": "application/json",
       },
-      { companyId }
-    );
+    });
+    console.log(response.body);
 
-    const { body } = response;
-    if (body && body.length > 0) {
-      console.log("Daily Logs:", body);
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `Daily logs request failed: ${JSON.stringify(errorData)}`
+      );
+    }
+
+    const logs = await response.json();
+    if (logs && logs.length > 0) {
+      console.log("Daily Logs:", logs);
     } else {
       console.log("No logs found for the specified date.");
     }
   } catch (error) {
-    console.error(
-      "Error fetching daily logs:",
-      error.response ? error.response.data : error.message
-    );
+    console.error("Error fetching daily logs:", error.message);
   }
 }
 
