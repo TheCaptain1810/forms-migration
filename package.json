@@ -15,6 +15,7 @@
     "child_process": "^1.0.2",
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
-    "punycode": "^2.3.1"
+    "punycode": "^2.3.1",
+    "request": "^2.88.2"
   }
 }
