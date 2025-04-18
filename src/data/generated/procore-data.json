@@ -832,14 +832,6 @@
       "data": [],
       "status": 200
     },
-    "defaultDistribution": {
-      "error": "Request failed with status code 404",
-      "status": 404
-    },
-    "itemTypes": {
-      "error": "Request failed with status code 404",
-      "status": 404
-    },
     "listItems": {
       "data": [],
       "status": 200
@@ -874,6 +866,16 @@
       "status": 200
     }
   },
+  "checklist": {
+    "itemTypes": {
+      "error": "Request failed with status code 400",
+      "status": 400
+    },
+    "listTemplates": {
+      "data": [],
+      "status": 200
+    }
+  },
   "recycled": {
     "recycledListItemComments": {
       "data": [],
@@ -894,20 +896,6 @@
     "recycledListTemplates": {
       "data": [],
       "status": 200
-    }
-  },
-  "checklist": {
-    "listTemplates": {
-      "data": [],
-      "status": 200
-    },
-    "possibleInspectors": {
-      "error": "Request failed with status code 404",
-      "status": 404
-    },
-    "potentialPointsOfContact": {
-      "error": "Request failed with status code 404",
-      "status": 404
     }
   },
   "dependent": {

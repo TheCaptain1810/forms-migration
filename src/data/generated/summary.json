@@ -6,19 +6,19 @@
       "failed": 1
     },
     "project": {
-      "endpoints": 11,
+      "endpoints": 9,
       "successful": 9,
-      "failed": 2
+      "failed": 0
+    },
+    "checklist": {
+      "endpoints": 2,
+      "successful": 1,
+      "failed": 1
     },
     "recycled": {
       "endpoints": 5,
       "successful": 5,
       "failed": 0
-    },
-    "checklist": {
-      "endpoints": 3,
-      "successful": 1,
-      "failed": 2
     },
     "dependent": {
       "endpoints": 2,
@@ -26,7 +26,7 @@
       "failed": 0
     }
   },
-  "totalEndpoints": 28,
+  "totalEndpoints": 25,
   "successfulEndpoints": 23,
-  "failedEndpoints": 5
+  "failedEndpoints": 2
 }

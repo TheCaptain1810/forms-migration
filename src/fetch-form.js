@@ -3,12 +3,12 @@ const path = require("path");
 const fs = require("fs");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
-const companyId = "4266122";
-const projectId = "121313";
+const companyId = "29142";
+const projectId = "680825";
 const accessToken = process.env.PROCORE_ACCESS_TOKEN;
 const refreshToken = process.env.PROCORE_REFRESH_TOKEN;
 // Use the sandbox credentials since we're using the sandbox
-const clientId = process.env.PROCORE_SANBOX_CLIENT_ID;
+const clientId = process.env.PROCORE_SANDBOX_CLIENT_ID;
 const clientSecret = process.env.PROCORE_SANDBOX_CLIENT_SECRET;
 const procore_base_url = process.env.PROCORE_SANDBOX_BASE_URL;
 
@@ -396,17 +396,10 @@ async function fetchAllChecklistData(token) {
       category: "project",
       url: `${procore_base_url}/rest/v1.0/projects/${projectId}/checklist/lists`,
     },
-    // Fix for 404 error: changed from default_distribution to distribution
-    {
-      name: "defaultDistribution",
-      category: "project",
-      url: `${procore_base_url}/rest/v1.0/projects/${projectId}/checklist/distribution`,
-    },
-    // Fix for 404 error: changed from item_types to types
     {
       name: "itemTypes",
-      category: "project",
-      url: `${procore_base_url}/rest/v1.0/projects/${projectId}/checklist/types`,
+      category: "checklist",
+      url: `${procore_base_url}/rest/v1.0/checklist/item_types`,
     },
     {
       name: "listItems",
@@ -457,16 +450,6 @@ async function fetchAllChecklistData(token) {
       category: "checklist",
       url: `${procore_base_url}/rest/v1.0/projects/${projectId}/checklist/list_templates`,
     },
-    {
-      name: "possibleInspectors",
-      category: "checklist",
-      url: `${procore_base_url}/rest/v1.0/projects/${projectId}/checklist/possible_inspectors`,
-    },
-    {
-      name: "potentialPointsOfContact",
-      category: "checklist",
-      url: `${procore_base_url}/rest/v1.0/projects/${projectId}/checklist/potential_points_of_contact`,
-    }
   ];
 
   try {
