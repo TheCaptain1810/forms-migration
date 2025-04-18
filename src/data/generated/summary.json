@@ -1,0 +1,32 @@
+{
+  "categories": {
+    "company": {
+      "endpoints": 7,
+      "successful": 6,
+      "failed": 1
+    },
+    "project": {
+      "endpoints": 11,
+      "successful": 9,
+      "failed": 2
+    },
+    "recycled": {
+      "endpoints": 5,
+      "successful": 5,
+      "failed": 0
+    },
+    "checklist": {
+      "endpoints": 3,
+      "successful": 1,
+      "failed": 2
+    },
+    "dependent": {
+      "endpoints": 2,
+      "successful": 2,
+      "failed": 0
+    }
+  },
+  "totalEndpoints": 28,
+  "successfulEndpoints": 23,
+  "failedEndpoints": 5
+}
