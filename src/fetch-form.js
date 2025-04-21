@@ -5,7 +5,6 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 class ProcoreApiClient {
   constructor() {
-    // Configuration
     this.companyId = "4266122";
     this.projectId = "121313";
     this.accessToken = process.env.PROCORE_ACCESS_TOKEN;
@@ -15,12 +14,10 @@ class ProcoreApiClient {
     this.procoreBaseUrl = process.env.PROCORE_BASE_URL;
     this.dataDir = path.resolve(__dirname, "./data/generated");
 
-    // Ensure data/generated directory exists
     if (!fs.existsSync(this.dataDir)) {
       fs.mkdirSync(this.dataDir, { recursive: true });
     }
 
-    // Define necessary endpoints
     this.endpoints = [
       {
         name: "lists",
@@ -33,16 +30,22 @@ class ProcoreApiClient {
         url: `${this.procoreBaseUrl}/rest/v1.0/projects/${this.projectId}/checklist/list_items`,
       },
     ];
+
+    this.fieldIdMapping = {
+      boolean: "79110a45-afcb-43dc-a3c3-2945a0ec4160",
+      multiple_choice: "bbceb11d-b9e2-48eb-b972-fb6a49504fdc",
+      single_choice: "68d715fd-9eef-4ee5-b6ce-45c1cccc7347",
+      text: "e313b84c-c812-4396-9659-a7ee7481f20b",
+      number: "059fa8f6-8387-4dc3-8f33-9e1012e6adc4",
+    };
   }
 
-  // Save data to a file
   saveDataToFile(filename, data) {
     const filePath = path.join(this.dataDir, filename);
     fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
     console.log(`Data saved to ${filePath}`);
   }
 
-  // Refresh access token
   async refreshAccessToken() {
     try {
       const { data } = await axios.post(
@@ -67,7 +70,6 @@ class ProcoreApiClient {
     }
   }
 
-  // Make a single API request with retry logic
   async makeApiRequest(endpoint, token, retryCount = 0) {
     const maxRetries = 2;
     const headers = {
@@ -125,7 +127,6 @@ class ProcoreApiClient {
     }
   }
 
-  // Sequentially make API requests
   async makeSequentialRequests(endpoints, token) {
     const results = [];
     let needsTokenRefresh = false;
@@ -156,11 +157,9 @@ class ProcoreApiClient {
     };
   }
 
-  // Fetch dependent data
   async fetchDependentData(baseData) {
     const dependentRequests = [];
 
-    // LIST RELATED ENDPOINTS
     if (
       baseData.project &&
       baseData.project.lists &&
@@ -193,7 +192,133 @@ class ProcoreApiClient {
     return [];
   }
 
-  // Fetch all checklist data
+  transformToAccFormData(procoreData) {
+    const accForms = [];
+    const templateName = "Material Inspection Request";
+
+    console.log("Transforming Procore data to ACC form data...");
+
+    if (
+      procoreData.project &&
+      procoreData.project.lists &&
+      procoreData.project.lists.data
+    ) {
+      const lists = procoreData.project.lists.data;
+      const listItems = procoreData.project?.listItems?.data || [];
+
+      console.log(`Found ${lists.length} lists`);
+      console.log(`Found ${listItems.length} list items`);
+
+      for (const list of lists) {
+        console.log(`Processing list ID: ${list.id}, Name: ${list.name}`);
+
+        // Map list metadata to ACC formData
+        const formData = {
+          assigneeId: list.responsible_contractor?.id || 2681412,
+          assigneeType: "user",
+          name: `${list.name}-${new Date(list.created_at).toLocaleDateString(
+            "en-US",
+            {
+              day: "2-digit",
+              month: "long",
+              year: "numeric",
+            }
+          )}`,
+          description:
+            list.description || `Checklist from Procore list ${list.id}`,
+          formDate: new Date(list.created_at).toISOString().split("T")[0],
+          notes: list.comments || "No additional notes",
+        };
+
+        // Filter and map list items to ACC custom values
+        const relevantItems = listItems.filter((item) => {
+          const isMatch = item.checklist_list_id === list.id;
+          if (!isMatch) {
+            console.log(
+              `Skipping item ID ${item.id}: checklist_list_id ${item.checklist_list_id} does not match list ID ${list.id}`
+            );
+          }
+          return isMatch;
+        });
+
+        console.log(
+          `Found ${relevantItems.length} items for list ID ${list.id}`
+        );
+
+        const customValues = relevantItems
+          .map((item, index) => {
+            if (!item.response_value || !item.item_type?.name) {
+              console.log(
+                `Skipping item ID ${item.id}: Missing response_value or item_type`
+              );
+              return null;
+            }
+
+            let fieldType = item.item_type.name.toLowerCase();
+            let value = item.response_value;
+
+            console.log(
+              `Mapping item ID ${
+                item.id
+              }: type=${fieldType}, value=${JSON.stringify(value)}`
+            );
+
+            let fieldData = {};
+            if (fieldType.includes("boolean")) {
+              fieldData = {
+                fieldId: this.fieldIdMapping.boolean,
+                toggleVal:
+                  value === true || value.toLowerCase() === "yes"
+                    ? "Yes"
+                    : "No",
+              };
+            } else if (fieldType.includes("multiple")) {
+              fieldData = {
+                fieldId: this.fieldIdMapping.multiple_choice,
+                arrayVal: Array.isArray(value) ? value : [value],
+              };
+            } else if (fieldType.includes("choice")) {
+              fieldData = {
+                fieldId: this.fieldIdMapping.single_choice,
+                choiceVal: value,
+              };
+            } else if (fieldType.includes("number")) {
+              fieldData = {
+                fieldId: this.fieldIdMapping.number,
+                numberVal: value.toString(),
+              };
+            } else {
+              fieldData = {
+                fieldId: this.fieldIdMapping.text,
+                textVal: value.toString(),
+              };
+            }
+
+            return fieldData;
+          })
+          .filter((item) => item !== null);
+
+        console.log(
+          `Generated ${customValues.length} custom values for list ID ${list.id}`
+        );
+
+        accForms.push({
+          templateName,
+          formData,
+          updateData: { customValues },
+        });
+      }
+    } else {
+      console.warn("No lists found in Procore data");
+    }
+
+    if (accForms.length === 0) {
+      console.warn("No ACC forms generated. Check Procore data.");
+    }
+
+    return accForms;
+  }
+
   async fetchAllChecklistData() {
     console.log("Starting to fetch checklist data...");
 
@@ -219,7 +344,6 @@ class ProcoreApiClient {
         }
       }
 
-      // Transform initial results into a structured object
       const baseData = {};
 
       for (const result of results) {
@@ -282,7 +406,6 @@ class ProcoreApiClient {
     }
   }
 
-  // Generate response summary
   generateResponseSummary(data) {
     const summary = {
       categories: {},
@@ -314,7 +437,6 @@ class ProcoreApiClient {
     return summary;
   }
 
-  // Main execution method
   async run() {
     try {
       console.log("Starting API fetch process...");
@@ -343,6 +465,9 @@ class ProcoreApiClient {
         );
       }
 
+      const accFormData = this.transformToAccFormData(allData);
+      this.saveDataToFile("acc-form-data.json", accFormData);
+
       this.saveDataToFile("summary.json", summary);
       this.saveDataToFile("procore-data.json", allData);
 
@@ -356,6 +481,5 @@ class ProcoreApiClient {
   }
 }
 
-// Execute the client
 const client = new ProcoreApiClient();
 client.run();
