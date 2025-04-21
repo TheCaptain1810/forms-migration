@@ -1,11 +1,11 @@
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
-require("dotenv").config();
+require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
-const BASE_URL = process.env.BASE_URL;
-const PROJECT_ID = process.env.PROJECT_ID;
-const AUTH_TOKEN = `Bearer ${process.env.AUTH_TOKEN}`;
+const baseUrl = process.env.ACC_BASE_URL;
+const projectId = process.env.ACC_PROJECT_ID;
+const authToken = `Bearer ${process.env.ACC_AUTH_TOKEN}`;
 
 class AccFormCreator {
   constructor() {
@@ -19,10 +19,10 @@ class AccFormCreator {
     try {
       // Fetch templates
       const getTemplatesResponse = await axios.get(
-        `${BASE_URL}/projects/${PROJECT_ID}/form-templates`,
+        `${baseUrl}/projects/${projectId}/form-templates`,
         {
           headers: {
-            Authorization: AUTH_TOKEN,
+            Authorization: authToken,
             "Content-Type": "application/json",
           },
           params: {
@@ -47,11 +47,11 @@ class AccFormCreator {
 
       // Create form
       const createFormResponse = await axios.post(
-        `${BASE_URL}/projects/${PROJECT_ID}/form-templates/${template.id}/forms`,
+        `${baseUrl}/projects/${projectId}/form-templates/${template.id}/forms`,
         formData,
         {
           headers: {
-            Authorization: AUTH_TOKEN,
+            Authorization: authToken,
             "Content-Type": "application/json",
           },
         }
@@ -69,11 +69,11 @@ class AccFormCreator {
 
       // Update custom values
       const addCustomValuesResponse = await axios.put(
-        `${BASE_URL}/projects/${PROJECT_ID}/forms/${formId}/values:batch-update`,
+        `${baseUrl}/projects/${projectId}/forms/${formId}/values:batch-update`,
         updateData,
         {
           headers: {
-            Authorization: AUTH_TOKEN,
+            Authorization: authToken,
             "Content-Type": "application/json",
           },
         }
