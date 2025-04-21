@@ -21,12 +21,12 @@
       "failed": 0
     },
     "dependent": {
-      "endpoints": 2,
-      "successful": 2,
+      "endpoints": 3,
+      "successful": 3,
       "failed": 0
     }
   },
-  "totalEndpoints": 25,
-  "successfulEndpoints": 23,
+  "totalEndpoints": 26,
+  "successfulEndpoints": 24,
   "failedEndpoints": 2
 }

@@ -825,15 +825,1177 @@
       "status": 200
     },
     "listSections": {
-      "data": [],
+      "data": [
+        {
+          "id": 12794828,
+          "name": "Substrate | Sheathing",
+          "position": 1,
+          "template_section_id": 12794820,
+          "updated_at": "2025-04-21T06:13:12Z"
+        },
+        {
+          "id": 12794829,
+          "name": "Insulation",
+          "position": 2,
+          "template_section_id": 12794821,
+          "updated_at": "2025-04-21T06:13:12Z"
+        },
+        {
+          "id": 12794830,
+          "name": "Flashing Locations",
+          "position": 3,
+          "template_section_id": 12794822,
+          "updated_at": "2025-04-21T06:13:12Z"
+        },
+        {
+          "id": 12794831,
+          "name": "Fire Barrier",
+          "position": 4,
+          "template_section_id": 12794823,
+          "updated_at": "2025-04-21T06:13:12Z"
+        },
+        {
+          "id": 12794832,
+          "name": "MEP Rough-In | Layout",
+          "position": 5,
+          "template_section_id": 12794824,
+          "updated_at": "2025-04-21T06:13:12Z"
+        },
+        {
+          "id": 12794833,
+          "name": "Waterproofing",
+          "position": 6,
+          "template_section_id": 12794825,
+          "updated_at": "2025-04-21T06:13:12Z"
+        },
+        {
+          "id": 12794834,
+          "name": "Sealant",
+          "position": 7,
+          "template_section_id": 12794826,
+          "updated_at": "2025-04-21T06:13:12Z"
+        },
+        {
+          "id": 12794835,
+          "name": "Evacuation Methods",
+          "position": 8,
+          "template_section_id": 12794827,
+          "updated_at": "2025-04-21T06:13:12Z"
+        }
+      ],
       "status": 200
     },
     "lists": {
-      "data": [],
+      "data": [
+        {
+          "id": 36551,
+          "attachments": [
+            {
+              "id": 8575019,
+              "content_type": "application/pdf",
+              "filename": "Material Inspection Request.pdf",
+              "name": "Material Inspection Request.pdf",
+              "thumbnail_url": "https://sandbox.procore.com/fas/api/v5/files/us-east-1/prostore-thumbnail-bucket-staging/e1bd1ba5-6a82-4719-87d4-e850efadb288_8575019_int-sbx_thumbnail_large?companyId=4266122&projectId=121313&sig=7beaaefbf438be958b92e519b2bcebee71675317fbaa558486c76450a0010e67",
+              "url": "https://sandbox.procore.com/fas/api/v5/files/us-east-1/pro-core.com-staging/companies/2216624/01JSBFMTWZ7YX6DWM6J0J9C8HN?companyId=4266122&projectId=121313&sig=f8de90637f4d16565d881246451f65167508334bb3cc35682839d280da36a3a0",
+              "viewable_document_id": null
+            }
+          ],
+          "closed_at": null,
+          "closed_by": null,
+          "closed_observations_count": 0,
+          "conforming_item_count": 13,
+          "created_at": "2025-04-21T06:13:12Z",
+          "created_by": {
+            "id": 17650,
+            "login": "amit.mandal@ncircletech.com",
+            "name": "Amit Mandal"
+          },
+          "current_drawing_revision_ids": [],
+          "custom_fields": {},
+          "default_response_phrasing": {
+            "conforming_response": "Pass",
+            "deficient_response": "Fail",
+            "global": true
+          },
+          "deficient_item_count": 5,
+          "deleted": false,
+          "description": "Created by OAC Management Incorporated\n\nOAC provides standard operating procedures, 3rd party quality assurance training, implementation, and site observations.\n\nFor more information, please visit our website at www.oacminc.com or contact us at 970-926-0290.\n\nThis checklist is intended to help project teams consider critical items that will have project specific requirements and standards. Teams can leverage the 'Details' section of each item at the project level to convey project specific requirements.\n\nUse of this checklist does not guarantee compliance with any applicable laws and regulations, nor does it guarantee avoidance of any specific incident. You should contact your attorney to obtain advice with respect to any particular issue.",
+          "distribution_members": [
+            {
+              "id": 144222,
+              "login": "sudhansu.pati@ncircletech.com",
+              "name": "Sudhansu Pati"
+            }
+          ],
+          "drawing_ids": [],
+          "due_at": null,
+          "equipment_id": null,
+          "identifier": "1",
+          "inspected_item_count": 26,
+          "inspection_date": "2025-04-20",
+          "inspection_type": {
+            "id": 997567,
+            "created_at": "2023-05-14T00:15:24Z",
+            "name": "Quality",
+            "updated_at": "2023-05-14T00:15:24Z"
+          },
+          "inspectors": [
+            {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            }
+          ],
+          "item_count": 26,
+          "list_template_id": 2756550,
+          "list_template_name": "[OAC Management Inc.] Pre-Roofing Checklist",
+          "location": null,
+          "managed_equipment_id": null,
+          "name": "[OAC Management Inc.] Pre-Roofing Checklist",
+          "neutral_item_count": 0,
+          "not_applicable_item_count": 8,
+          "number": 1,
+          "observations_count": 0,
+          "overdue": false,
+          "point_of_contact": {
+            "id": 144222,
+            "login": "sudhansu.pati@ncircletech.com",
+            "name": "Sudhansu Pati"
+          },
+          "private": false,
+          "respondable_item_count": 26,
+          "responsible_contractor": {
+            "id": 2681412,
+            "name": "Architect TEST Company"
+          },
+          "schedule": null,
+          "signature_requests": [],
+          "specification_section": null,
+          "status": "Open",
+          "template_id": 2756550,
+          "trade": null,
+          "updated_at": "2025-04-21T06:14:15Z"
+        }
+      ],
       "status": 200
     },
     "listItems": {
-      "data": [],
+      "data": [
+        {
+          "id": 72764020,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764020,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:18Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Product Approved",
+          "position": 1,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794828,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72763994,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:18Z"
+        },
+        {
+          "id": 72764021,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764021,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:20Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Substrate Requirements",
+          "position": 2,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794828,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72763995,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:20Z"
+        },
+        {
+          "id": 72764022,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764022,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:21Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "non_conforming"
+          },
+          "list_id": 36551,
+          "name": "Blocking | Supports Installed",
+          "position": 3,
+          "responded_with": "Fail",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794828,
+          "signature_request_ids": [],
+          "status": "no",
+          "template_item_id": 72763996,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:21Z"
+        },
+        {
+          "id": 72764023,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764023,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:23Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "not_applicable"
+          },
+          "list_id": 36551,
+          "name": "Product Approved",
+          "position": 1,
+          "responded_with": "N/A",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794829,
+          "signature_request_ids": [],
+          "status": "n/a",
+          "template_item_id": 72763997,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:23Z"
+        },
+        {
+          "id": 72764024,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764024,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:24Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "not_applicable"
+          },
+          "list_id": 36551,
+          "name": "Thickness Requirements",
+          "position": 2,
+          "responded_with": "N/A",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794829,
+          "signature_request_ids": [],
+          "status": "n/a",
+          "template_item_id": 72763998,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:24Z"
+        },
+        {
+          "id": 72764025,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764025,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:24Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Proper Installation",
+          "position": 3,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794829,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72763999,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:24Z"
+        },
+        {
+          "id": 72764026,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764026,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:25Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "not_applicable"
+          },
+          "list_id": 36551,
+          "name": "Eave | Rake | Valley",
+          "position": 1,
+          "responded_with": "N/A",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794830,
+          "signature_request_ids": [],
+          "status": "n/a",
+          "template_item_id": 72764000,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:25Z"
+        },
+        {
+          "id": 72764027,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764027,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:26Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "non_conforming"
+          },
+          "list_id": 36551,
+          "name": "Cap | Parapet | Chimney",
+          "position": 2,
+          "responded_with": "Fail",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794830,
+          "signature_request_ids": [],
+          "status": "no",
+          "template_item_id": 72764001,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:26Z"
+        },
+        {
+          "id": 72764028,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764028,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:27Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "non_conforming"
+          },
+          "list_id": 36551,
+          "name": "Transitions",
+          "position": 3,
+          "responded_with": "Fail",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794830,
+          "signature_request_ids": [],
+          "status": "no",
+          "template_item_id": 72764002,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:27Z"
+        },
+        {
+          "id": 72764029,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764029,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:27Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Penetrations",
+          "position": 4,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794830,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72764003,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:27Z"
+        },
+        {
+          "id": 72764030,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764030,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:28Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Kick-Out | Step",
+          "position": 5,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794830,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72764004,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:28Z"
+        },
+        {
+          "id": 72764031,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764031,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:29Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Product Approved",
+          "position": 1,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794831,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72764005,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:29Z"
+        },
+        {
+          "id": 72764032,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764032,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:29Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Proper Installation",
+          "position": 2,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794831,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72764006,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:29Z"
+        },
+        {
+          "id": 72764033,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764033,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:31Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Supply | Vent | Exhaust Locations",
+          "position": 1,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794832,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72764007,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:31Z"
+        },
+        {
+          "id": 72764034,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764034,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:31Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "not_applicable"
+          },
+          "list_id": 36551,
+          "name": "Pipe | Conduit Locations",
+          "position": 2,
+          "responded_with": "N/A",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794832,
+          "signature_request_ids": [],
+          "status": "n/a",
+          "template_item_id": 72764008,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:31Z"
+        },
+        {
+          "id": 72764035,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764035,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:32Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Equipment Pads | Curbs",
+          "position": 3,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794832,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72764009,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:32Z"
+        },
+        {
+          "id": 72764036,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764036,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:14:15Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Proper Detailing",
+          "position": 4,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794832,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72764010,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:14:15Z"
+        },
+        {
+          "id": 72764037,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764037,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:33Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "not_applicable"
+          },
+          "list_id": 36551,
+          "name": "Product Approved",
+          "position": 1,
+          "responded_with": "N/A",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794833,
+          "signature_request_ids": [],
+          "status": "n/a",
+          "template_item_id": 72764011,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:33Z"
+        },
+        {
+          "id": 72764038,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764038,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:34Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "not_applicable"
+          },
+          "list_id": 36551,
+          "name": "Proper Overlap",
+          "position": 2,
+          "responded_with": "N/A",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794833,
+          "signature_request_ids": [],
+          "status": "n/a",
+          "template_item_id": 72764012,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:34Z"
+        },
+        {
+          "id": 72764039,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764039,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:35Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "not_applicable"
+          },
+          "list_id": 36551,
+          "name": "Proper Detailing",
+          "position": 3,
+          "responded_with": "N/A",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794833,
+          "signature_request_ids": [],
+          "status": "n/a",
+          "template_item_id": 72764013,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:35Z"
+        },
+        {
+          "id": 72764040,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764040,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:36Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "not_applicable"
+          },
+          "list_id": 36551,
+          "name": "Sealant Compatibility",
+          "position": 1,
+          "responded_with": "N/A",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794834,
+          "signature_request_ids": [],
+          "status": "n/a",
+          "template_item_id": 72764014,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:36Z"
+        },
+        {
+          "id": 72764041,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764041,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:36Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "non_conforming"
+          },
+          "list_id": 36551,
+          "name": "Penetrations",
+          "position": 2,
+          "responded_with": "Fail",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794834,
+          "signature_request_ids": [],
+          "status": "no",
+          "template_item_id": 72764015,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:36Z"
+        },
+        {
+          "id": 72764042,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764042,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:37Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "non_conforming"
+          },
+          "list_id": 36551,
+          "name": "Damage Repair Requirements",
+          "position": 3,
+          "responded_with": "Fail",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794834,
+          "signature_request_ids": [],
+          "status": "no",
+          "template_item_id": 72764016,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:37Z"
+        },
+        {
+          "id": 72764043,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764043,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:38Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Proper Slope",
+          "position": 1,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794835,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72764017,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:38Z"
+        },
+        {
+          "id": 72764044,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764044,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:38Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Drains: Quantity | Location | Size",
+          "position": 2,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794835,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72764018,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:38Z"
+        },
+        {
+          "id": 72764045,
+          "company_template_item_details": null,
+          "details": null,
+          "item_reference_ids": [],
+          "item_response": {
+            "item_id": 72764045,
+            "item_type": {
+              "id": 1,
+              "category": "multiple_choice",
+              "name": "default"
+            },
+            "payload": null,
+            "responded_at": "2025-04-21T06:13:39Z",
+            "responder": {
+              "id": 17650,
+              "login": "amit.mandal@ncircletech.com",
+              "name": "Amit Mandal"
+            },
+            "status": "conforming"
+          },
+          "list_id": 36551,
+          "name": "Gutters | Downspouts | Scuppers",
+          "position": 3,
+          "responded_with": "Pass",
+          "response": null,
+          "response_set": null,
+          "response_type_id": null,
+          "section_id": 12794835,
+          "signature_request_ids": [],
+          "status": "yes",
+          "template_item_id": 72764019,
+          "type": {
+            "id": 1,
+            "category": "multiple_choice",
+            "name": "default"
+          },
+          "updated_at": "2025-04-21T06:13:39Z"
+        }
+      ],
       "status": 200
     },
     "users": {
@@ -862,7 +2024,28 @@
       "status": 200
     },
     "projectListTemplates": {
-      "data": [],
+      "data": [
+        {
+          "id": 2756550,
+          "company_description": "Created by OAC Management Incorporated\n\nOAC provides standard operating procedures, 3rd party quality assurance training, implementation, and site observations.\n\nFor more information, please visit our website at www.oacminc.com or contact us at 970-926-0290.\n\nThis checklist is intended to help project teams consider critical items that will have project specific requirements and standards. Teams can leverage the 'Details' section of each item at the project level to convey project specific requirements.\n\nUse of this checklist does not guarantee compliance with any applicable laws and regulations, nor does it guarantee avoidance of any specific incident. You should contact your attorney to obtain advice with respect to any particular issue.",
+          "created_at": "2025-04-21T06:10:27Z",
+          "deletable": true,
+          "description": null,
+          "inspection_type": {
+            "id": 997567,
+            "created_at": "2023-05-14T00:15:24Z",
+            "name": "Quality",
+            "updated_at": "2023-05-14T00:15:24Z"
+          },
+          "name": "[OAC Management Inc.] Pre-Roofing Checklist",
+          "synced_to": {
+            "company_id": 4266122,
+            "list_template_id": 2641965
+          },
+          "trade": null,
+          "updated_at": "2025-04-21T06:10:27Z"
+        }
+      ],
       "status": 200
     }
   },
@@ -872,7 +2055,30 @@
       "status": 400
     },
     "listTemplates": {
-      "data": [],
+      "data": [
+        {
+          "id": 2756550,
+          "name": "[OAC Management Inc.] Pre-Roofing Checklist",
+          "synced_to": {
+            "company_id": 4266122,
+            "list_template_id": 2641965
+          },
+          "company_description": "Created by OAC Management Incorporated\n\nOAC provides standard operating procedures, 3rd party quality assurance training, implementation, and site observations.\n\nFor more information, please visit our website at www.oacminc.com or contact us at 970-926-0290.\n\nThis checklist is intended to help project teams consider critical items that will have project specific requirements and standards. Teams can leverage the 'Details' section of each item at the project level to convey project specific requirements.\n\nUse of this checklist does not guarantee compliance with any applicable laws and regulations, nor does it guarantee avoidance of any specific incident. You should contact your attorney to obtain advice with respect to any particular issue.",
+          "description": null,
+          "created_at": "2025-04-21T06:10:27Z",
+          "updated_at": "2025-04-21T06:10:27Z",
+          "inspection_type": {
+            "id": 997567,
+            "name": "Quality",
+            "created_at": "2023-05-14T00:15:24Z",
+            "updated_at": "2023-05-14T00:15:24Z",
+            "company_id": 4266122,
+            "deleted_at": null,
+            "source_id": 1
+          },
+          "trade": null
+        }
+      ],
       "status": 200
     }
   },
@@ -899,6 +2105,12 @@
     }
   },
   "dependent": {
+    "lists": {
+      "listSignatureRequests_36551": {
+        "error": "Request failed with status code 400",
+        "status": 400
+      }
+    },
     "listTemplates": {
       "listTemplateSections_2641955": {
         "data": [

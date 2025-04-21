@@ -7,10 +7,10 @@ const companyId = "4266122";
 const projectId = "121313";
 const accessToken = process.env.PROCORE_ACCESS_TOKEN;
 const refreshToken = process.env.PROCORE_REFRESH_TOKEN;
-// Use the sandbox credentials since we're using the sandbox
-const clientId = process.env.PROCORE_SANDBOX_CLIENT_ID;
-const clientSecret = process.env.PROCORE_SANDBOX_CLIENT_SECRET;
-const procore_base_url = process.env.PROCORE_SANDBOX_BASE_URL;
+// Use the PRODUCTION credentials since we're using the PRODUCTION
+const clientId = process.env.PROCORE_CLIENT_ID;
+const clientSecret = process.env.PROCORE_CLIENT_SECRET;
+const procore_base_url = process.env.PROCORE_BASE_URL;
 
 // Ensure data/generated directory exists
 const dataDir = path.resolve(__dirname, "./data/generated");
@@ -25,54 +25,26 @@ function saveDataToFile(filename, data) {
   console.log(`Data saved to ${filePath}`);
 }
 
-async function refreshAccessToken() {
+async function refreshAccessToken(refreshToken) {
   try {
-    console.log("Attempting to refresh token...");
-    console.log(
-      `Using client ID: ${clientId ? "✓ (defined)" : "✗ (undefined)"}`
-    );
-    console.log(
-      `Using client secret: ${clientSecret ? "✓ (defined)" : "✗ (undefined)"}`
-    );
-    console.log(
-      `Using refresh token: ${refreshToken ? "✓ (defined)" : "✗ (undefined)"}`
+    const { data } = await axios.post(
+      `${PROCORE_PRODUCTION_BASE_URL}/oauth/token`,
+      null,
+      {
+        params: {
+          grant_type: "refresh_token",
+          client_id: clientId,
+          client_secret: clientSecret,
+          refresh_token: refreshToken,
+        },
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      }
     );
 
-    console.log(
-      `Sending refresh request to: https://login.procore.com/oauth/token`
-    );
-
-    const response = await axios({
-      method: "POST",
-      url: `https://login.procore.com/oauth/token`,
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      params: {
-        grant_type: "refresh_token",
-        client_id: clientId,
-        client_secret: clientSecret,
-        refresh_token: refreshToken,
-      },
-    });
-
-    console.log("Token response received:", response.status);
-
-    if (response.data && response.data.access_token) {
-      console.log("Token refresh successful");
-      return response.data.access_token;
-    } else {
-      console.error("Response did not contain access token:", response.data);
-      throw new Error(
-        "Failed to refresh token: " + JSON.stringify(response.data)
-      );
-    }
+    return data.access_token;
   } catch (error) {
-    console.error(
-      "Token refresh error details:",
-      error.response?.data || error.message
-    );
-    throw new Error(`Failed to refresh token: ${error.message}`);
+    console.error("Error refreshing token:", error.message);
+    throw new Error("Failed to refresh Procore token");
   }
 }
 
@@ -516,7 +488,7 @@ async function fetchAllChecklistData(token) {
     if (needsTokenRefresh) {
       console.log("Token needs refreshing. Attempting to refresh...");
       try {
-        const newToken = await refreshAccessToken();
+        const newToken = await refreshAccessToken(refreshToken);
         console.log("Successfully refreshed token, retrying requests...");
         return fetchAllChecklistData(newToken);
       } catch (refreshError) {

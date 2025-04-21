@@ -7,7 +7,7 @@
   "type": "commonjs",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "create-form": "node create-form.js"
+    "create-form": "node src/create-form.js"
   },
   "dependencies": {
     "@procore/js-sdk": "^4.2.1",
@@ -16,6 +16,7 @@
     "dotenv": "^16.4.7",
     "express": "^5.1.0",
     "punycode": "^2.3.1",
-    "request": "^2.88.2"
+    "request": "^2.88.2",
+    "uuid": "^11.1.0"
   }
 }
