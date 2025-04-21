@@ -5,6 +5,7 @@ require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
 class ProcoreApiClient {
   constructor() {
+    // Procore configuration
     this.companyId = "4266122";
     this.projectId = "121313";
     this.accessToken = process.env.PROCORE_ACCESS_TOKEN;
@@ -12,8 +13,15 @@ class ProcoreApiClient {
     this.clientId = process.env.PROCORE_CLIENT_ID;
     this.clientSecret = process.env.PROCORE_CLIENT_SECRET;
     this.procoreBaseUrl = process.env.PROCORE_BASE_URL;
-    this.dataDir = path.resolve(__dirname, "./data/generated");
 
+    // ACC configuration
+    this.accBaseUrl = process.env.ACC_BASE_URL;
+    this.accProjectId = process.env.ACC_PROJECT_ID;
+    this.accAuthToken = process.env.ACC_AUTH_TOKEN
+      ? `Bearer ${process.env.ACC_AUTH_TOKEN}`
+      : null;
+
+    this.dataDir = path.resolve(__dirname, "./data/generated");
     if (!fs.existsSync(this.dataDir)) {
       fs.mkdirSync(this.dataDir, { recursive: true });
     }
@@ -29,6 +37,11 @@ class ProcoreApiClient {
         category: "project",
         url: `${this.procoreBaseUrl}/rest/v1.0/projects/${this.projectId}/checklist/list_items`,
       },
+      {
+        name: "users",
+        category: "project",
+        url: `${this.procoreBaseUrl}/rest/v1.0/projects/${this.projectId}/users`,
+      },
     ];
 
     this.fieldIdMapping = {
@@ -38,6 +51,9 @@ class ProcoreApiClient {
       text: "e313b84c-c812-4396-9659-a7ee7481f20b",
       number: "059fa8f6-8387-4dc3-8f33-9e1012e6adc4",
     };
+
+    // Default ACC assigneeId for fallback
+    this.defaultAccAssigneeId = "PUJXLNP3U8TM";
   }
 
   saveDataToFile(filename, data) {
@@ -68,6 +84,77 @@ class ProcoreApiClient {
       console.error("Error refreshing token:", error.message);
       throw new Error("Failed to refresh Procore token");
     }
+  }
+
+  async fetchAccUsers() {
+    try {
+      if (!this.accBaseUrl || !this.accProjectId || !this.accAuthToken) {
+        throw new Error("ACC credentials missing in .env file");
+      }
+
+      const response = await axios.get(
+        `${this.accBaseUrl}/admin/projects/${this.accProjectId}/users`,
+        {
+          headers: {
+            Authorization: this.accAuthToken,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log("Fetched ACC users successfully");
+      return response.data.data || [];
+    } catch (error) {
+      console.error("Error fetching ACC users:");
+      if (error.response) {
+        console.error("Status:", error.response.status);
+        console.error("Data:", error.response.data);
+      } else {
+        console.error("Error:", error.message);
+      }
+      return [];
+    }
+  }
+
+  async createUserMapping(procoreUsers) {
+    const accUsers = await this.fetchAccUsers();
+    const userMapping = {};
+
+    console.log(
+      `Mapping ${procoreUsers.length} Procore users to ${accUsers.length} ACC users`
+    );
+
+    for (const procoreUser of procoreUsers) {
+      const procoreId = procoreUser.id;
+      const procoreEmail = procoreUser.email?.toLowerCase();
+
+      if (!procoreEmail) {
+        console.warn(
+          `Procore user ID ${procoreId} has no email, using default assigneeId`
+        );
+        userMapping[procoreId] = this.defaultAccAssigneeId;
+        continue;
+      }
+
+      const accUser = accUsers.find(
+        (user) => user.email?.toLowerCase() === procoreEmail
+      );
+
+      if (accUser && accUser.id) {
+        userMapping[procoreId] = accUser.id;
+        console.log(
+          `Mapped Procore ID ${procoreId} to ACC ID ${accUser.id} via email ${procoreEmail}`
+        );
+      } else {
+        console.warn(
+          `No ACC user found for Procore email ${procoreEmail}, using default assigneeId`
+        );
+        userMapping[procoreId] = this.defaultAccAssigneeId;
+      }
+    }
+
+    this.saveDataToFile("user-mapping.json", userMapping);
+    return userMapping;
   }
 
   async makeApiRequest(endpoint, token, retryCount = 0) {
@@ -192,7 +279,7 @@ class ProcoreApiClient {
     return [];
   }
 
-  transformToAccFormData(procoreData) {
+  transformToAccFormData(procoreData, userMapping) {
     const accForms = [];
     const templateName = "Material Inspection Request";
 
@@ -206,15 +293,20 @@ class ProcoreApiClient {
       const lists = procoreData.project.lists.data;
       const listItems = procoreData.project?.listItems?.data || [];
 
-      console.log(`Found ${lists.length} lists`);
+      console.log(`SUV Found ${lists.length} lists`);
       console.log(`Found ${listItems.length} list items`);
 
       for (const list of lists) {
         console.log(`Processing list ID: ${list.id}, Name: ${list.name}`);
 
         // Map list metadata to ACC formData
+        const procoreAssigneeId = list.responsible_contractor?.id;
+        const accAssigneeId = procoreAssigneeId
+          ? userMapping[procoreAssigneeId] || this.defaultAccAssigneeId
+          : this.defaultAccAssigneeId;
+
         const formData = {
-          assigneeId: list.responsible_contractor?.id || 2681412,
+          assigneeId: accAssigneeId,
           assigneeType: "user",
           name: `${list.name}-${new Date(list.created_at).toLocaleDateString(
             "en-US",
@@ -246,7 +338,7 @@ class ProcoreApiClient {
         );
 
         const customValues = relevantItems
-          .map((item, index) => {
+          .map((item) => {
             if (!item.response_value || !item.item_type?.name) {
               console.log(
                 `Skipping item ID ${item.id}: Missing response_value or item_type`
@@ -443,13 +535,25 @@ class ProcoreApiClient {
       console.log(`Using Procore base URL: ${this.procoreBaseUrl}`);
       console.log(`Using company ID: ${this.companyId}`);
       console.log(`Using project ID: ${this.projectId}`);
+      console.log(`Using ACC base URL: ${this.accBaseUrl}`);
 
       if (!this.accessToken) {
-        console.error("Access token is not available. Check your .env file.");
+        console.error(
+          "Procore access token is not available. Check your .env file."
+        );
+        process.exit(1);
+      }
+
+      if (!this.accAuthToken) {
+        console.error("ACC auth token is not available. Check your .env file.");
         process.exit(1);
       }
 
       const allData = await this.fetchAllChecklistData();
+
+      // Create user mapping
+      const procoreUsers = allData.project?.users?.data || [];
+      const userMapping = await this.createUserMapping(procoreUsers);
 
       const summary = this.generateResponseSummary(allData);
 
@@ -465,7 +569,7 @@ class ProcoreApiClient {
         );
       }
 
-      const accFormData = this.transformToAccFormData(allData);
+      const accFormData = this.transformToAccFormData(allData, userMapping);
       this.saveDataToFile("acc-form-data.json", accFormData);
 
       this.saveDataToFile("summary.json", summary);
