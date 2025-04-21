@@ -15,7 +15,8 @@ class ProcoreApiClient {
     this.procoreBaseUrl = process.env.PROCORE_BASE_URL;
 
     // ACC configuration
-    this.accBaseUrl = process.env.ACC_BASE_URL;
+    this.accBaseUrl =
+      "https://developer.api.autodesk.com/construction/admin/v1";
     this.accProjectId = process.env.ACC_PROJECT_ID;
     this.accAuthToken = process.env.ACC_AUTH_TOKEN
       ? `Bearer ${process.env.ACC_AUTH_TOKEN}`
@@ -93,7 +94,7 @@ class ProcoreApiClient {
       }
 
       const response = await axios.get(
-        `${this.accBaseUrl}/admin/projects/${this.accProjectId}/users`,
+        `${this.accBaseUrl}/projects/${this.accProjectId}/users`,
         {
           headers: {
             Authorization: this.accAuthToken,
@@ -103,7 +104,7 @@ class ProcoreApiClient {
       );
 
       console.log("Fetched ACC users successfully");
-      return response.data.data || [];
+      return response.data.results || [];
     } catch (error) {
       console.error("Error fetching ACC users:");
       if (error.response) {
@@ -126,7 +127,7 @@ class ProcoreApiClient {
 
     for (const procoreUser of procoreUsers) {
       const procoreId = procoreUser.id;
-      const procoreEmail = procoreUser.email?.toLowerCase();
+      const procoreEmail = procoreUser.email_address?.toLowerCase();
 
       if (!procoreEmail) {
         console.warn(
