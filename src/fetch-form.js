@@ -141,10 +141,10 @@ class ProcoreApiClient {
         (user) => user.email?.toLowerCase() === procoreEmail
       );
 
-      if (accUser && accUser.id) {
-        userMapping[procoreId] = accUser.id;
+      if (accUser && accUser.autodeskId) {
+        userMapping[procoreId] = accUser.autodeskId;
         console.log(
-          `Mapped Procore ID ${procoreId} to ACC ID ${accUser.id} via email ${procoreEmail}`
+          `Mapped Procore ID ${procoreId} to ACC ID ${accUser.autodeskId} via email ${procoreEmail}`
         );
       } else {
         console.warn(
