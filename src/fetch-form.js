@@ -3,8 +3,8 @@ const path = require("path");
 const fs = require("fs");
 require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
 
-const companyId = "29142";
-const projectId = "680825";
+const companyId = "4266122";
+const projectId = "121313";
 const accessToken = process.env.PROCORE_ACCESS_TOKEN;
 const refreshToken = process.env.PROCORE_REFRESH_TOKEN;
 // Use the sandbox credentials since we're using the sandbox
@@ -28,39 +28,50 @@ function saveDataToFile(filename, data) {
 async function refreshAccessToken() {
   try {
     console.log("Attempting to refresh token...");
-    console.log(`Using client ID: ${clientId ? "✓ (defined)" : "✗ (undefined)"}`);
-    console.log(`Using client secret: ${clientSecret ? "✓ (defined)" : "✗ (undefined)"}`);
-    console.log(`Using refresh token: ${refreshToken ? "✓ (defined)" : "✗ (undefined)"}`);
-    
-    const formData = new URLSearchParams({
-      grant_type: "refresh_token",
-      client_id: clientId,
-      client_secret: clientSecret,
-      refresh_token: refreshToken,
-    });
+    console.log(
+      `Using client ID: ${clientId ? "✓ (defined)" : "✗ (undefined)"}`
+    );
+    console.log(
+      `Using client secret: ${clientSecret ? "✓ (defined)" : "✗ (undefined)"}`
+    );
+    console.log(
+      `Using refresh token: ${refreshToken ? "✓ (defined)" : "✗ (undefined)"}`
+    );
 
-    console.log(`Sending refresh request to: ${procore_base_url}/oauth/token`);
+    console.log(
+      `Sending refresh request to: https://login.procore.com/oauth/token`
+    );
 
     const response = await axios({
       method: "POST",
-      url: `${procore_base_url}/oauth/token`,
+      url: `https://login.procore.com/oauth/token`,
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
-      data: formData,
+      params: {
+        grant_type: "refresh_token",
+        client_id: clientId,
+        client_secret: clientSecret,
+        refresh_token: refreshToken,
+      },
     });
 
     console.log("Token response received:", response.status);
-    
+
     if (response.data && response.data.access_token) {
       console.log("Token refresh successful");
       return response.data.access_token;
-        } else {
+    } else {
       console.error("Response did not contain access token:", response.data);
-      throw new Error("Failed to refresh token: " + JSON.stringify(response.data));
+      throw new Error(
+        "Failed to refresh token: " + JSON.stringify(response.data)
+      );
     }
   } catch (error) {
-    console.error("Token refresh error details:", error.response?.data || error.message);
+    console.error(
+      "Token refresh error details:",
+      error.response?.data || error.message
+    );
     throw new Error(`Failed to refresh token: ${error.message}`);
   }
 }
@@ -69,8 +80,8 @@ async function refreshAccessToken() {
 async function makeApiRequest(token, endpoint, retryCount = 0) {
   const maxRetries = 2; // Maximum number of retries
   const headers = {
-      Authorization: `Bearer ${token}`,
-      "Procore-Company-Id": companyId,
+    Authorization: `Bearer ${token}`,
+    "Procore-Company-Id": companyId,
   };
 
   try {
@@ -80,19 +91,19 @@ async function makeApiRequest(token, endpoint, retryCount = 0) {
       url: endpoint.url,
       headers,
     });
-    
+
     console.log(`${endpoint.name}: Success (${response.status})`);
     return {
       name: endpoint.name,
       category: endpoint.category,
       subcategory: endpoint.subcategory || null,
       data: response.data,
-      status: response.status
+      status: response.status,
     };
   } catch (error) {
-    const status = error.response?.status || 'unknown';
+    const status = error.response?.status || "unknown";
     console.log(`${endpoint.name}: Failed (${status}) - ${error.message}`);
-    
+
     // If it's a 401 unauthorized, we'll handle token refresh at a higher level
     if (status === 401) {
       return {
@@ -100,23 +111,25 @@ async function makeApiRequest(token, endpoint, retryCount = 0) {
         category: endpoint.category,
         subcategory: endpoint.subcategory || null,
         error: error.message,
-        status: status
+        status: status,
       };
     }
-    
+
     // For other errors, retry if we haven't reached max retries
     if (retryCount < maxRetries) {
-      console.log(`Retrying ${endpoint.name} (Attempt ${retryCount + 1} of ${maxRetries})`);
-      await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
+      console.log(
+        `Retrying ${endpoint.name} (Attempt ${retryCount + 1} of ${maxRetries})`
+      );
+      await new Promise((resolve) => setTimeout(resolve, 1000)); // Wait 1 second before retry
       return makeApiRequest(token, endpoint, retryCount + 1);
     }
-    
+
     return {
       name: endpoint.name,
       category: endpoint.category,
       subcategory: endpoint.subcategory || null,
       error: error.message,
-      status: status
+      status: status,
     };
   }
 }
@@ -125,7 +138,7 @@ async function makeApiRequest(token, endpoint, retryCount = 0) {
 async function makeSequentialRequests(token, endpoints) {
   const results = [];
   let needsTokenRefresh = false;
-  
+
   for (const endpoint of endpoints) {
     if (needsTokenRefresh) {
       // Skip remaining requests if we know we need a token refresh
@@ -134,23 +147,23 @@ async function makeSequentialRequests(token, endpoints) {
         category: endpoint.category,
         subcategory: endpoint.subcategory || null,
         error: "Skipped due to pending token refresh",
-        status: "skipped"
+        status: "skipped",
       });
       continue;
     }
-    
+
     const result = await makeApiRequest(token, endpoint);
     results.push(result);
-    
+
     // Check if we need to refresh token
     if (result.status === 401) {
       needsTokenRefresh = true;
     }
   }
-  
+
   return {
     results,
-    needsTokenRefresh
+    needsTokenRefresh,
   };
 }
 
@@ -158,7 +171,11 @@ async function fetchDependentData(token, baseData) {
   const dependentRequests = [];
 
   // SCHEDULE RELATED ENDPOINTS
-  if (baseData.project && baseData.project.schedules && baseData.project.schedules.data) {
+  if (
+    baseData.project &&
+    baseData.project.schedules &&
+    baseData.project.schedules.data
+  ) {
     const schedules = baseData.project.schedules.data;
     for (const schedule of schedules) {
       if (schedule.id) {
@@ -168,7 +185,7 @@ async function fetchDependentData(token, baseData) {
           subcategory: "schedules",
           url: `${procore_base_url}/rest/v1.0/projects/${projectId}/checklist/schedules/${schedule.id}/attachments`,
         });
-        
+
         dependentRequests.push({
           name: `scheduleChangeHistory_${schedule.id}`,
           category: "dependent",
@@ -180,7 +197,11 @@ async function fetchDependentData(token, baseData) {
   }
 
   // LIST RELATED ENDPOINTS
-  if (baseData.project && baseData.project.lists && baseData.project.lists.data) {
+  if (
+    baseData.project &&
+    baseData.project.lists &&
+    baseData.project.lists.data
+  ) {
     const lists = baseData.project.lists.data;
     for (const list of lists) {
       if (list.id) {
@@ -195,7 +216,11 @@ async function fetchDependentData(token, baseData) {
   }
 
   // INSPECTION TEMPLATE RELATED ENDPOINTS
-  if (baseData.company && baseData.company.inspectionTemplates && baseData.company.inspectionTemplates.data) {
+  if (
+    baseData.company &&
+    baseData.company.inspectionTemplates &&
+    baseData.company.inspectionTemplates.data
+  ) {
     const templates = baseData.company.inspectionTemplates.data;
     for (const template of templates) {
       if (template.id) {
@@ -205,7 +230,7 @@ async function fetchDependentData(token, baseData) {
           subcategory: "inspectionTemplates",
           url: `${procore_base_url}/rest/v1.0/companies/${companyId}/inspection_templates/${template.id}/item_references`,
         });
-        
+
         dependentRequests.push({
           name: `inspectionTemplateItems_${template.id}`,
           category: "dependent",
@@ -217,7 +242,11 @@ async function fetchDependentData(token, baseData) {
   }
 
   // LIST TEMPLATE RELATED ENDPOINTS
-  if (baseData.company && baseData.company.listTemplates && baseData.company.listTemplates.data) {
+  if (
+    baseData.company &&
+    baseData.company.listTemplates &&
+    baseData.company.listTemplates.data
+  ) {
     const templates = baseData.company.listTemplates.data;
     for (const template of templates) {
       if (template.id) {
@@ -232,7 +261,11 @@ async function fetchDependentData(token, baseData) {
   }
 
   // INSPECTION ITEMS RELATED ENDPOINTS
-  if (baseData.project && baseData.project.inspectionItems && baseData.project.inspectionItems.data) {
+  if (
+    baseData.project &&
+    baseData.project.inspectionItems &&
+    baseData.project.inspectionItems.data
+  ) {
     const items = baseData.project.inspectionItems.data;
     for (const item of items) {
       if (item.id) {
@@ -242,7 +275,7 @@ async function fetchDependentData(token, baseData) {
           subcategory: "inspectionItems",
           url: `${procore_base_url}/rest/v2.0/companies/${companyId}/projects/${projectId}/inspection_items/${item.id}/evidence_configuration`,
         });
-        
+
         dependentRequests.push({
           name: `itemSignatureRequests_${item.id}`,
           category: "dependent",
@@ -254,7 +287,11 @@ async function fetchDependentData(token, baseData) {
   }
 
   // INSPECTION TEMPLATE ITEMS RELATED ENDPOINTS
-  if (baseData.project && baseData.project.inspectionTemplateItems && baseData.project.inspectionTemplateItems.data) {
+  if (
+    baseData.project &&
+    baseData.project.inspectionTemplateItems &&
+    baseData.project.inspectionTemplateItems.data
+  ) {
     const templateItems = baseData.project.inspectionTemplateItems.data;
     for (const item of templateItems) {
       if (item.id) {
@@ -269,7 +306,11 @@ async function fetchDependentData(token, baseData) {
   }
 
   // INSPECTIONS RELATED ENDPOINTS
-  if (baseData.project && baseData.project.inspections && baseData.project.inspections.data) {
+  if (
+    baseData.project &&
+    baseData.project.inspections &&
+    baseData.project.inspections.data
+  ) {
     const inspections = baseData.project.inspections.data;
     for (const inspection of inspections) {
       if (inspection.id) {
@@ -284,7 +325,11 @@ async function fetchDependentData(token, baseData) {
   }
 
   // RESPONSE SETS RELATED ENDPOINTS
-  if (baseData.company && baseData.company.responseSets && baseData.company.responseSets.data) {
+  if (
+    baseData.company &&
+    baseData.company.responseSets &&
+    baseData.company.responseSets.data
+  ) {
     const responseSets = baseData.company.responseSets.data;
     for (const responseSet of responseSets) {
       if (responseSet.id) {
@@ -299,7 +344,11 @@ async function fetchDependentData(token, baseData) {
   }
 
   // PROJECT INSPECTION TEMPLATES - if fetched in first round
-  if (baseData.project && baseData.project.projectInspectionTemplates && baseData.project.projectInspectionTemplates.data) {
+  if (
+    baseData.project &&
+    baseData.project.projectInspectionTemplates &&
+    baseData.project.projectInspectionTemplates.data
+  ) {
     const templates = baseData.project.projectInspectionTemplates.data;
     for (const template of templates) {
       if (template.id) {
@@ -315,17 +364,19 @@ async function fetchDependentData(token, baseData) {
 
   // Make dependent requests sequentially
   if (dependentRequests.length > 0) {
-    console.log(`Processing ${dependentRequests.length} dependent requests sequentially...`);
+    console.log(
+      `Processing ${dependentRequests.length} dependent requests sequentially...`
+    );
     const { results } = await makeSequentialRequests(token, dependentRequests);
     return results;
   }
-  
+
   return [];
 }
 
 async function fetchAllChecklistData(token) {
   console.log("Starting to fetch checklist data...");
-  
+
   // First batch of endpoints - no dependent IDs needed
   const endpoints = [
     // Company level endpoints
@@ -364,7 +415,7 @@ async function fetchAllChecklistData(token) {
       category: "company",
       url: `${procore_base_url}/rest/v1.0/companies/${companyId}/checklist/responses`,
     },
-    
+
     // Project level endpoints
     {
       name: "listItemComments",
@@ -374,7 +425,7 @@ async function fetchAllChecklistData(token) {
     {
       name: "listItemAttachments",
       category: "project",
-    url: `${procore_base_url}/rest/v1.0/projects/${projectId}/checklist/list_item_attachments`,
+      url: `${procore_base_url}/rest/v1.0/projects/${projectId}/checklist/list_item_attachments`,
     },
     {
       name: "listItemObservations",
@@ -416,7 +467,7 @@ async function fetchAllChecklistData(token) {
       category: "project",
       url: `${procore_base_url}/rest/v1.1/projects/${projectId}/checklist/list_templates`,
     },
-    
+
     // Recycled bin endpoints - fixed recycledListItemComments URL
     {
       name: "recycledListItemComments",
@@ -443,7 +494,7 @@ async function fetchAllChecklistData(token) {
       category: "recycled",
       url: `${procore_base_url}/rest/v1.0/projects/${projectId}/recycle_bin/checklist/list_templates`,
     },
-    
+
     // General checklist endpoints - added project_id to fix 400 errors
     {
       name: "listTemplates",
@@ -454,10 +505,13 @@ async function fetchAllChecklistData(token) {
 
   try {
     console.log(`Processing ${endpoints.length} endpoints sequentially...`);
-    
+
     // Use sequential requests instead of Promise.all
-    const { results, needsTokenRefresh } = await makeSequentialRequests(token, endpoints);
-    
+    const { results, needsTokenRefresh } = await makeSequentialRequests(
+      token,
+      endpoints
+    );
+
     // If token needs refresh, do it and retry
     if (needsTokenRefresh) {
       console.log("Token needs refreshing. Attempting to refresh...");
@@ -470,10 +524,10 @@ async function fetchAllChecklistData(token) {
         throw new Error("Could not refresh token to continue with requests");
       }
     }
-    
+
     // Transform initial results into a structured object
     const baseData = {};
-    
+
     for (const result of results) {
       if (!baseData[result.category]) {
         baseData[result.category] = {};
@@ -481,52 +535,54 @@ async function fetchAllChecklistData(token) {
       baseData[result.category][result.name] = {
         data: result.data,
         error: result.error,
-        status: result.status
+        status: result.status,
       };
     }
-    
+
     console.log("Initial requests completed. Processing results...");
-    
+
     // Count successes and failures
-    const successes = results.filter(r => !r.error).length;
-    const failures = results.filter(r => r.error).length;
-    
+    const successes = results.filter((r) => !r.error).length;
+    const failures = results.filter((r) => r.error).length;
+
     console.log(`Request summary: ${successes} successful, ${failures} failed`);
-    
+
     // Log failing endpoints for troubleshooting
     if (failures > 0) {
       console.log("Failing endpoints:");
-      results.filter(r => r.error).forEach(r => {
-        console.log(`- ${r.category}/${r.name}: ${r.status} (${r.error})`);
-      });
+      results
+        .filter((r) => r.error)
+        .forEach((r) => {
+          console.log(`- ${r.category}/${r.name}: ${r.status} (${r.error})`);
+        });
     }
-    
+
     // Try fetching dependent data if we have some successful responses
     if (successes > 0) {
       console.log("Fetching dependent data based on successful responses...");
       // Fetch dependent data (endpoints that need IDs from initial responses)
       const dependentResults = await fetchDependentData(token, baseData);
-      
+
       // Add dependent results to the response
       if (dependentResults.length > 0) {
         if (!baseData.dependent) {
           baseData.dependent = {};
         }
-        
+
         for (const result of dependentResults) {
           if (!baseData.dependent[result.subcategory]) {
             baseData.dependent[result.subcategory] = {};
           }
-          
+
           baseData.dependent[result.subcategory][result.name] = {
             data: result.data,
             error: result.error,
-            status: result.status
+            status: result.status,
           };
         }
       }
     }
-    
+
     console.log("All data fetching operations completed");
     return baseData;
   } catch (error) {
@@ -541,31 +597,31 @@ function generateResponseSummary(data) {
     categories: {},
     totalEndpoints: 0,
     successfulEndpoints: 0,
-    failedEndpoints: 0
+    failedEndpoints: 0,
   };
-  
+
   // Process each category
   for (const category in data) {
     summary.categories[category] = {
       endpoints: Object.keys(data[category]).length,
       successful: 0,
-      failed: 0
+      failed: 0,
     };
-    
+
     // Count successful and failed endpoints in this category
     for (const endpoint in data[category]) {
       summary.totalEndpoints++;
-      
+
       if (data[category][endpoint].error) {
         summary.failedEndpoints++;
         summary.categories[category].failed++;
-    } else {
+      } else {
         summary.successfulEndpoints++;
         summary.categories[category].successful++;
       }
     }
   }
-  
+
   return summary;
 }
 
@@ -576,33 +632,37 @@ async function main() {
     console.log(`Using Procore base URL: ${procore_base_url}`);
     console.log(`Using company ID: ${companyId}`);
     console.log(`Using project ID: ${projectId}`);
-    
+
     // Check if token is available
     if (!accessToken) {
       console.error("Access token is not available. Check your .env file.");
       process.exit(1);
     }
-    
+
     const allData = await fetchAllChecklistData(accessToken);
-    
+
     // Generate a summary
     const summary = generateResponseSummary(allData);
-    
+
     console.log("\n=== SUMMARY ===");
     console.log(`Total endpoints: ${summary.totalEndpoints}`);
     console.log(`Successful: ${summary.successfulEndpoints}`);
     console.log(`Failed: ${summary.failedEndpoints}`);
     console.log("\nCategories:");
-    
+
     for (const category in summary.categories) {
-      console.log(`- ${category}: ${summary.categories[category].successful} successful, ${summary.categories[category].failed} failed`);
+      console.log(
+        `- ${category}: ${summary.categories[category].successful} successful, ${summary.categories[category].failed} failed`
+      );
     }
-    
+
     // Save summary and full data to files
     saveDataToFile("summary.json", summary);
     saveDataToFile("procore-data.json", allData);
-    
-    console.log("\nProcess complete. Data saved to files in src/data/generated directory.");
+
+    console.log(
+      "\nProcess complete. Data saved to files in src/data/generated directory."
+    );
     return allData;
   } catch (error) {
     console.error("Fatal error:", error);
