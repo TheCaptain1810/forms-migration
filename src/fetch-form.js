@@ -282,7 +282,7 @@ class ProcoreApiClient {
 
   transformToAccFormData(procoreData, userMapping) {
     const accForms = [];
-    const templateName = "Material Inspection Request";
+    const templateName = "Work Inspection Request";
 
     console.log("Transforming Procore data to ACC form data...");
 
