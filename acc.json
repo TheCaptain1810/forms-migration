@@ -1,0 +1,334 @@
+[
+  {
+    "assigneeId": "PUJXLNP3U8TM",
+    "assigneeType": "user",
+    "createdAt": "2025-04-22T11:24:14.979204+00:00",
+    "createdBy": "PUJXLNP3U8TM",
+    "customValues": [
+      {
+        "fieldId": "1e1c49f8-c947-4252-8375-989764bbecfc",
+        "itemLabel": "Material Approval",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "c2813207-1753-4230-9430-ff0b369abcae",
+        "itemLabel": "Packing List",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "76be7344-4d01-4727-8aa3-51559cec06b1",
+        "itemLabel": "Bill of Lading",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "41cb8ae4-08d5-4d3b-8679-49fdf2c8bf0d",
+        "itemLabel": "Delivery Docket",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "81b8e0c6-8e26-4cde-9d21-bb85625d72fe",
+        "itemLabel": "Quality",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "13e3c995-e142-480b-b76c-75cb5cf021bf",
+        "itemLabel": "Certificate of Origin",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "b0c8bc60-e47e-4d17-86a1-0a19b38fcf85",
+        "itemLabel": "LEED Certificate Compliance",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "8b1c3f9c-e575-43ee-a705-2d132251eece",
+        "itemLabel": "Material Detail Breakdown Sheet",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "d457aad3-11ad-4675-bf7b-0f67e805c4d3",
+        "itemLabel": "Test Required",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "c1f5253c-d039-49e6-aee3-6c58d3cce9ee",
+        "itemLabel": "Confirmation of Contractor's Quality-Inspection - Confirmation of coordination and compliance with contractual document, approved drawings, approved method and Quality Control plan",
+        "sectionLabel": "Contractor's Confirmation",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "ebb4fe1f-8938-4da3-9c83-97b277e9b7ce",
+        "itemLabel": "Items Complete in accordance with Delivery Docket",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "8d8450ee-9a66-4b7a-96fe-150c0bbf4f6b",
+        "itemLabel": "Documentation is available and in conformance",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "471cc5e0-4127-4326-b9cd-d77f395e1b3e",
+        "itemLabel": "Items can be readily identified",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "8ec6036b-6f1e-431f-9e6b-d08d400730b3",
+        "itemLabel": "Special handling/storage required/shelf-life expiry date",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "474ed415-514a-47f0-986d-47e416f1f151",
+        "itemLabel": "Items checked against approved sample and satisfactory",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "cbb3c513-9b95-4c09-951b-24c26ef178a8",
+        "itemLabel": "Items have no defects or damage",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "701bb728-b1ea-48b8-9b6b-1570ab4e6c8e",
+        "itemLabel": "Requirements or quality control test are complied",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "fc5490a1-7de3-4c48-b06a-0dd97cad5b01",
+        "itemLabel": "Inspection Outcome",
+        "sectionLabel": "Inspection Outcome",
+        "valueName": "textVal"
+      },
+      {
+        "fieldId": "e6e626d8-17b0-4424-ace2-fbcaa3866b17",
+        "itemLabel": "Inspection Date",
+        "sectionLabel": "Inspection Outcome",
+        "valueName": "dateVal"
+      },
+      {
+        "fieldId": "d029df1e-b98f-4213-9382-52bcfd4156e1",
+        "itemLabel": "Inspection Comments",
+        "sectionLabel": "Inspection Outcome",
+        "valueName": "textVal"
+      },
+      {
+        "fieldId": "e0d75099-72b8-4631-8643-781eacc4dfbe",
+        "itemLabel": "Inspection Outcome Status",
+        "sectionLabel": "Inspection Outcome",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "6e233917-ef0d-4f8b-9b1a-107fc6ce1d89",
+        "itemLabel": "Checking and Approval by the Engineer shall not relieve contractor from his obligation to perform the work in accordance with the contract documents, requirement of safety and local Authorities regulations.",
+        "sectionLabel": "Turner's Disclaimer",
+        "valueName": "toggleVal"
+      }
+    ],
+    "description": "This is a material inspection request test.",
+    "dueDate": null,
+    "formDate": "2025-04-21",
+    "formNum": 103,
+    "formTemplate": {
+      "id": "14f61b8c-5e34-47a9-91d7-fd07cf056ae1",
+      "name": "Material Inspection Request",
+      "projectId": "de199d13-ecfb-4b83-9b33-10d843b0d452",
+      "status": "active",
+      "templateType": "pg.template_type.quality"
+    },
+    "id": "054b10fc-537b-4cff-8219-67e340710c09",
+    "lastSubmitterSignature": null,
+    "locationId": null,
+    "name": "Material Inspection Request-April 21, 2025",
+    "notes": "No additional notes",
+    "projectId": "de199d13-ecfb-4b83-9b33-10d843b0d452",
+    "status": "draft",
+    "tabularValues": {
+      "equipmentEntries": null,
+      "materialsEntries": null,
+      "worklogEntries": null
+    },
+    "updatedAt": "2025-04-22T11:24:15.636040+00:00",
+    "userCreatedAt": "2025-04-22T11:24:14.985666+00:00",
+    "weather": null
+  },
+  {
+    "assigneeId": "PUJXLNP3U8TM",
+    "assigneeType": "user",
+    "createdAt": "2025-04-23T05:59:31.889913+00:00",
+    "createdBy": "PUJXLNP3U8TM",
+    "customValues": [
+      {
+        "fieldId": "1e1c49f8-c947-4252-8375-989764bbecfc",
+        "itemLabel": "Material Approval",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "c2813207-1753-4230-9430-ff0b369abcae",
+        "itemLabel": "Packing List",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "76be7344-4d01-4727-8aa3-51559cec06b1",
+        "itemLabel": "Bill of Lading",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "41cb8ae4-08d5-4d3b-8679-49fdf2c8bf0d",
+        "itemLabel": "Delivery Docket",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "81b8e0c6-8e26-4cde-9d21-bb85625d72fe",
+        "itemLabel": "Quality",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "13e3c995-e142-480b-b76c-75cb5cf021bf",
+        "itemLabel": "Certificate of Origin",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "b0c8bc60-e47e-4d17-86a1-0a19b38fcf85",
+        "itemLabel": "LEED Certificate Compliance",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "8b1c3f9c-e575-43ee-a705-2d132251eece",
+        "itemLabel": "Material Detail Breakdown Sheet",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "d457aad3-11ad-4675-bf7b-0f67e805c4d3",
+        "itemLabel": "Test Required",
+        "sectionLabel": "Supporting Documents",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "c1f5253c-d039-49e6-aee3-6c58d3cce9ee",
+        "itemLabel": "Confirmation of Contractor's Quality-Inspection - Confirmation of coordination and compliance with contractual document, approved drawings, approved method and Quality Control plan",
+        "sectionLabel": "Contractor's Confirmation",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "ebb4fe1f-8938-4da3-9c83-97b277e9b7ce",
+        "itemLabel": "Items Complete in accordance with Delivery Docket",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "8d8450ee-9a66-4b7a-96fe-150c0bbf4f6b",
+        "itemLabel": "Documentation is available and in conformance",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "471cc5e0-4127-4326-b9cd-d77f395e1b3e",
+        "itemLabel": "Items can be readily identified",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "8ec6036b-6f1e-431f-9e6b-d08d400730b3",
+        "itemLabel": "Special handling/storage required/shelf-life expiry date",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "474ed415-514a-47f0-986d-47e416f1f151",
+        "itemLabel": "Items checked against approved sample and satisfactory",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "cbb3c513-9b95-4c09-951b-24c26ef178a8",
+        "itemLabel": "Items have no defects or damage",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "701bb728-b1ea-48b8-9b6b-1570ab4e6c8e",
+        "itemLabel": "Requirements or quality control test are complied",
+        "sectionLabel": "Checklist ",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "fc5490a1-7de3-4c48-b06a-0dd97cad5b01",
+        "itemLabel": "Inspection Outcome",
+        "sectionLabel": "Inspection Outcome",
+        "valueName": "textVal"
+      },
+      {
+        "fieldId": "e6e626d8-17b0-4424-ace2-fbcaa3866b17",
+        "itemLabel": "Inspection Date",
+        "sectionLabel": "Inspection Outcome",
+        "valueName": "dateVal"
+      },
+      {
+        "fieldId": "d029df1e-b98f-4213-9382-52bcfd4156e1",
+        "itemLabel": "Inspection Comments",
+        "sectionLabel": "Inspection Outcome",
+        "valueName": "textVal"
+      },
+      {
+        "fieldId": "e0d75099-72b8-4631-8643-781eacc4dfbe",
+        "itemLabel": "Inspection Outcome Status",
+        "sectionLabel": "Inspection Outcome",
+        "valueName": "toggleVal"
+      },
+      {
+        "fieldId": "6e233917-ef0d-4f8b-9b1a-107fc6ce1d89",
+        "itemLabel": "Checking and Approval by the Engineer shall not relieve contractor from his obligation to perform the work in accordance with the contract documents, requirement of safety and local Authorities regulations.",
+        "sectionLabel": "Turner's Disclaimer",
+        "valueName": "toggleVal"
+      }
+    ],
+    "description": "this is a work inspection request",
+    "dueDate": null,
+    "formDate": "2025-04-23",
+    "formNum": 132,
+    "formTemplate": {
+      "id": "14f61b8c-5e34-47a9-91d7-fd07cf056ae1",
+      "name": "Material Inspection Request",
+      "projectId": "de199d13-ecfb-4b83-9b33-10d843b0d452",
+      "status": "active",
+      "templateType": "pg.template_type.quality"
+    },
+    "id": "5d1b5beb-e98f-4673-a6a7-b25523fbbc6c",
+    "lastSubmitterSignature": null,
+    "locationId": null,
+    "name": "Work Inspection Request-April 23, 2025",
+    "notes": "No additional notes",
+    "projectId": "de199d13-ecfb-4b83-9b33-10d843b0d452",
+    "status": "draft",
+    "tabularValues": {
+      "equipmentEntries": null,
+      "materialsEntries": null,
+      "worklogEntries": null
+    },
+    "updatedAt": "2025-04-23T05:59:32.578177+00:00",
+    "userCreatedAt": "2025-04-23T05:59:31.897327+00:00",
+    "weather": null
+  }
+]

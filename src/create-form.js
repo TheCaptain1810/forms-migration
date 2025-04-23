@@ -58,6 +58,7 @@ class AccFormCreator {
       );
 
       console.log(`Form "${formData.name}" created successfully!`);
+      console.log(formData);
 
       const formId = createFormResponse.data.id;
       const customFieldIds = createFormResponse.data.customValues.map(
@@ -80,6 +81,7 @@ class AccFormCreator {
       );
 
       console.log(`Form "${formData.name}" values updated successfully!`);
+      console.log(addCustomValuesResponse.data);
       return { formId, status: "success" };
     } catch (error) {
       console.error(`Error creating form "${formData.name}":`);
