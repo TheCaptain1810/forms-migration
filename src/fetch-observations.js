@@ -539,7 +539,7 @@ class ProcoreApiClient {
         console.error("ACC auth token is not available. Check your .env file.");
         process.exit(1);
       }
-
+ 
       const allData = await this.fetchAllChecklistData();
 
       // Create user mapping
