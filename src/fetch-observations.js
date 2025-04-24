@@ -35,14 +35,6 @@ class ProcoreApiClient {
       },
     ];
 
-    this.fieldIdMapping = {
-      boolean: "79110a45-afcb-43dc-a3c3-2945a0ec4160",
-      multiple_choice: "bbceb11d-b9e2-48eb-b972-fb6a49504fdc",
-      single_choice: "68d715fd-9eef-4ee5-b6ce-45c1cccc7347",
-      text: "e313b84c-c812-4396-9659-a7ee7481f20b",
-      number: "059fa8f6-8387-4dc3-8f33-9e1012e6adc4",
-    };
-
     // Default ACC assigneeId for fallback
     this.defaultAccAssigneeId = "PUJXLNP3U8TM";
   }
@@ -105,47 +97,6 @@ class ProcoreApiClient {
       }
       return [];
     }
-  }
-
-  async createUserMapping(procoreUsers) {
-    const accUsers = await this.fetchAccUsers();
-    const userMapping = {};
-
-    console.log(
-      `Mapping ${procoreUsers.length} Procore users to ${accUsers.length} ACC users`
-    );
-
-    for (const procoreUser of procoreUsers) {
-      const procoreId = procoreUser.id;
-      const procoreEmail = procoreUser.email_address?.toLowerCase();
-
-      if (!procoreEmail) {
-        console.warn(
-          `Procore user ID ${procoreId} has no email, using default assigneeId`
-        );
-        userMapping[procoreId] = this.defaultAccAssigneeId;
-        continue;
-      }
-
-      const accUser = accUsers.find(
-        (user) => user.email?.toLowerCase() === procoreEmail
-      );
-
-      if (accUser && accUser.autodeskId) {
-        userMapping[procoreId] = accUser.autodeskId;
-        console.log(
-          `Mapped Procore ID ${procoreId} to ACC ID ${accUser.autodeskId} via email ${procoreEmail}`
-        );
-      } else {
-        console.warn(
-          `No ACC user found for Procore email ${procoreEmail}, using default assigneeId`
-        );
-        userMapping[procoreId] = this.defaultAccAssigneeId;
-      }
-    }
-
-    this.saveDataToFile("user-mapping.json", userMapping);
-    return userMapping;
   }
 
   async makeApiRequest(endpoint, token, retryCount = 0) {
@@ -235,173 +186,6 @@ class ProcoreApiClient {
     };
   }
 
-  async fetchDependentData(baseData) {
-    const dependentRequests = [];
-
-    if (
-      baseData.project &&
-      baseData.project.lists &&
-      baseData.project.lists.data
-    ) {
-      const lists = baseData.project.lists.data;
-      for (const list of lists) {
-        if (list.id) {
-          dependentRequests.push({
-            name: `listSignatureRequests_${list.id}`,
-            category: "dependent",
-            subcategory: "lists",
-            url: `${this.procoreBaseUrl}/rest/v1.0/checklist/lists/${list.id}/signature_requests`,
-          });
-        }
-      }
-    }
-
-    if (dependentRequests.length > 0) {
-      console.log(
-        `Processing ${dependentRequests.length} dependent requests sequentially...`
-      );
-      const { results } = await this.makeSequentialRequests(
-        dependentRequests,
-        this.accessToken
-      );
-      return results;
-    }
-
-    return [];
-  }
-
-  transformToAccFormData(procoreData, userMapping) {
-    const accForms = [];
-    const templateName = "Work Inspection Request";
-
-    console.log("Transforming Procore data to ACC form data...");
-
-    if (
-      procoreData.project &&
-      procoreData.project.lists &&
-      procoreData.project.lists.data
-    ) {
-      const lists = procoreData.project.lists.data;
-      const listItems = procoreData.project?.listItems?.data || [];
-
-      console.log(`SUV Found ${lists.length} lists`);
-      console.log(`Found ${listItems.length} list items`);
-
-      for (const list of lists) {
-        console.log(`Processing list ID: ${list.id}, Name: ${list.name}`);
-
-        // Map list metadata to ACC formData
-        const procoreAssigneeId = list.responsible_contractor?.id;
-        const accAssigneeId = procoreAssigneeId
-          ? userMapping[procoreAssigneeId] || this.defaultAccAssigneeId
-          : this.defaultAccAssigneeId;
-
-        const formData = {
-          assigneeId: accAssigneeId,
-          assigneeType: "user",
-          name: `${list.name}-${new Date(list.created_at).toLocaleDateString(
-            "en-US",
-            {
-              day: "2-digit",
-              month: "long",
-              year: "numeric",
-            }
-          )}`,
-          description:
-            list.description || `Checklist from Procore list ${list.id}`,
-          formDate: new Date(list.created_at).toISOString().split("T")[0],
-          notes: list.comments || "No additional notes",
-        };
-
-        // Filter and map list items to ACC custom values
-        const relevantItems = listItems.filter((item) => {
-          const isMatch = item.checklist_list_id === list.id;
-          if (!isMatch) {
-            console.log(
-              `Skipping item ID ${item.id}: checklist_list_id ${item.checklist_list_id} does not match list ID ${list.id}`
-            );
-          }
-          return isMatch;
-        });
-
-        console.log(
-          `Found ${relevantItems.length} items for list ID ${list.id}`
-        );
-
-        const customValues = relevantItems
-          .map((item) => {
-            if (!item.response_value || !item.item_type?.name) {
-              console.log(
-                `Skipping item ID ${item.id}: Missing response_value or item_type`
-              );
-              return null;
-            }
-
-            let fieldType = item.item_type.name.toLowerCase();
-            let value = item.response_value;
-
-            console.log(
-              `Mapping item ID ${
-                item.id
-              }: type=${fieldType}, value=${JSON.stringify(value)}`
-            );
-
-            let fieldData = {};
-            if (fieldType.includes("boolean")) {
-              fieldData = {
-                fieldId: this.fieldIdMapping.boolean,
-                toggleVal:
-                  value === true || value.toLowerCase() === "yes"
-                    ? "Yes"
-                    : "No",
-              };
-            } else if (fieldType.includes("multiple")) {
-              fieldData = {
-                fieldId: this.fieldIdMapping.multiple_choice,
-                arrayVal: Array.isArray(value) ? value : [value],
-              };
-            } else if (fieldType.includes("choice")) {
-              fieldData = {
-                fieldId: this.fieldIdMapping.single_choice,
-                choiceVal: value,
-              };
-            } else if (fieldType.includes("number")) {
-              fieldData = {
-                fieldId: this.fieldIdMapping.number,
-                numberVal: value.toString(),
-              };
-            } else {
-              fieldData = {
-                fieldId: this.fieldIdMapping.text,
-                textVal: value.toString(),
-              };
-            }
-
-            return fieldData;
-          })
-          .filter((item) => item !== null);
-
-        console.log(
-          `Generated ${customValues.length} custom values for list ID ${list.id}`
-        );
-
-        accForms.push({
-          templateName,
-          formData,
-          updateData: { customValues },
-        });
-      }
-    } else {
-      console.warn("No lists found in Procore data");
-    }
-
-    if (accForms.length === 0) {
-      console.warn("No ACC forms generated. Check Procore data.");
-    }
-
-    return accForms;
-  }
-
   async fetchAllChecklistData() {
     console.log("Starting to fetch checklist data...");
 
@@ -458,29 +242,6 @@ class ProcoreApiClient {
           });
       }
 
-      if (successes > 0) {
-        console.log("Fetching dependent data based on successful responses...");
-        const dependentResults = await this.fetchDependentData(baseData);
-
-        if (dependentResults.length > 0) {
-          if (!baseData.dependent) {
-            baseData.dependent = {};
-          }
-
-          for (const result of dependentResults) {
-            if (!baseData.dependent[result.subcategory]) {
-              baseData.dependent[result.subcategory] = {};
-            }
-
-            baseData.dependent[result.subcategory][result.name] = {
-              data: result.data,
-              error: result.error,
-              status: result.status,
-            };
-          }
-        }
-      }
-
       console.log("All data fetching operations completed");
       return baseData;
     } catch (error) {
@@ -489,44 +250,12 @@ class ProcoreApiClient {
     }
   }
 
-  generateResponseSummary(data) {
-    const summary = {
-      categories: {},
-      totalEndpoints: 0,
-      successfulEndpoints: 0,
-      failedEndpoints: 0,
-    };
-
-    for (const category in data) {
-      summary.categories[category] = {
-        endpoints: Object.keys(data[category]).length,
-        successful: 0,
-        failed: 0,
-      };
-
-      for (const endpoint in data[category]) {
-        summary.totalEndpoints++;
-
-        if (data[category][endpoint].error) {
-          summary.failedEndpoints++;
-          summary.categories[category].failed++;
-        } else {
-          summary.successfulEndpoints++;
-          summary.categories[category].successful++;
-        }
-      }
-    }
-
-    return summary;
-  }
-
   async run() {
     try {
       console.log("Starting API fetch process...");
       console.log(`Using Procore base URL: ${this.procoreBaseUrl}`);
       console.log(`Using company ID: ${this.companyId}`);
       console.log(`Using project ID: ${this.projectId}`);
-      console.log(`Using ACC base URL: ${this.accBaseUrl}`);
 
       if (!this.accessToken) {
         console.error(
@@ -542,29 +271,7 @@ class ProcoreApiClient {
  
       const allData = await this.fetchAllChecklistData();
 
-      // Create user mapping
-      const procoreUsers = allData.project?.users?.data || [];
-      const userMapping = await this.createUserMapping(procoreUsers);
-
-      const summary = this.generateResponseSummary(allData);
-
-      console.log("\n=== SUMMARY ===");
-      console.log(`Total endpoints: ${summary.totalEndpoints}`);
-      console.log(`Successful: ${summary.successfulEndpoints}`);
-      console.log(`Failed: ${summary.failedEndpoints}`);
-      console.log("\nCategories:");
-
-      for (const category in summary.categories) {
-        console.log(
-          `- ${category}: ${summary.categories[category].successful} successful, ${summary.categories[category].failed} failed`
-        );
-      }
-
-      const accFormData = this.transformToAccFormData(allData, userMapping);
-      this.saveDataToFile("acc-form-data.json", accFormData);
-
-      this.saveDataToFile("summary.json", summary);
-      this.saveDataToFile("procore-data.json", allData);
+      this.saveDataToFile("observations.json", allData);
 
       console.log(
         "\nProcess complete. Data saved to files in src/data/generated directory."
