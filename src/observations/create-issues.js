@@ -1,36 +1,47 @@
 const axios = require("axios");
 const fs = require("fs");
 const path = require("path");
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 
 const baseUrl = process.env.ACC_BASE_URL;
 const projectId = process.env.ACC_PROJECT_ID;
 const authToken = `Bearer ${process.env.ACC_AUTH_TOKEN}`;
-const issueStatus = process.env.ACC_ISSUE_STATUS || 'open';
-const issueSubtypeId = process.env.ACC_ISSUE_SUBTYPE_ID || "c4965ffe-3812-4f0f-b41a-4a94dbdab1bb";
+const issueStatus = process.env.ACC_ISSUE_STATUS || "open";
+const issueTypeId =
+  process.env.ACC_ISSUE_TYPE_ID || "64d1071e-e071-498c-a9f1-2af27f7b206f";
+const issueSubtypeId =
+  process.env.ACC_ISSUE_SUBTYPE_ID || "c4965ffe-3812-4f0f-b41a-4a94dbdab1bb";
 
 class AccIssueCreator {
   constructor() {
     this.dataDir = path.resolve(__dirname, "./data/generated");
-    this.inputFile = path.join(this.dataDir, "procore-data.json");
+    this.inputFile = path.join(this.dataDir, "observations.json");
   }
 
   async createIssue(formEntry) {
     const { formData, updateData } = formEntry;
 
     try {
-      // Build issue payload
+      // Build issue payload based on ACC format
       const issuePayload = {
         title: formData.name,
         description: formData.description || "",
         status: issueStatus,
+        issueTypeId: issueTypeId,
         issueSubtypeId: issueSubtypeId,
-        assignee: {
-          id: formData.assigneeId,
-          type: formData.assigneeType
-        },
-        customValues: updateData.customValues
+        dueDate: formData.dueDate || null,
+        startDate: formData.startDate || null,
+        locationDetails: formData.location || null,
+        published: false, // Default to unpublished
+        customAttributes: updateData.customAttributes || [],
       };
+
+      // Add assignee if available
+      if (formData.assigneeId) {
+        issuePayload.assignedTo = formData.assigneeId;
+        issuePayload.assignedToType = formData.assigneeType || "user";
+      }
+
       // Create issue
       const response = await axios.post(
         `${baseUrl}/projects/${projectId}/issues`,
@@ -38,11 +49,13 @@ class AccIssueCreator {
         {
           headers: {
             Authorization: authToken,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
           },
         }
       );
-      console.log(`Issue "${formData.name}" created with ID: ${response.data.id}`);
+      console.log(
+        `Issue "${formData.name}" created with ID: ${response.data.id}`
+      );
       return { issueId: response.data.id, status: "success" };
     } catch (error) {
       console.error(`Error creating issue "${formData.name}":`);
@@ -56,19 +69,47 @@ class AccIssueCreator {
     }
   }
 
+  transformObservation(obs) {
+    // Transform Procore observation to ACC issue format
+    const entry = {
+      formData: {
+        name: `${obs.number || ""}: ${obs.name || "Untitled"}`.trim(),
+        description: obs.description || "",
+        assigneeId: obs.assignee?.id || null,
+        assigneeType: "user",
+        dueDate: obs.due_date || null,
+        startDate: obs.start_date || null,
+        location: obs.location || null,
+      },
+      updateData: {
+        customAttributes: [],
+      },
+    };
+
+    // Add custom attributes if available
+    if (obs.custom_fields && Array.isArray(obs.custom_fields)) {
+      entry.updateData.customAttributes = obs.custom_fields.map((field) => ({
+        attributeDefinitionId: field.custom_field_definition_id,
+        value: field.value,
+        type: field.type || "text",
+        title: field.title || "",
+      }));
+    }
+
+    return entry;
+  }
+
   async run() {
     try {
       // Read transformed data
       if (!fs.existsSync(this.inputFile)) {
         throw new Error(
-          "Input data file not found (acc-form-data.json). Run Procore fetch first."
+          "Input data file not found (observations.json). Run Procore fetch first."
         );
       }
 
       // Load Procore observations from raw data
-      const rawData = JSON.parse(
-        fs.readFileSync(this.inputFile, "utf-8")
-      );
+      const rawData = JSON.parse(fs.readFileSync(this.inputFile, "utf-8"));
       const observations = rawData.project?.observations?.data || [];
 
       if (observations.length === 0) {
@@ -76,22 +117,14 @@ class AccIssueCreator {
         return;
       }
 
-      console.log(`Processing ${observations.length} observations into issues...`);
+      console.log(
+        `Processing ${observations.length} observations into issues...`
+      );
 
       const results = [];
       for (const obs of observations) {
         // Transform each observation into issue payload
-        const entry = {
-          formData: {
-            name: `${obs.number}: ${obs.name}`,
-            description: obs.description || "",
-            assigneeId: obs.assignee?.id,
-            assigneeType: "user",
-          },
-          updateData: {
-            customValues: [],
-          },
-        };
+        const entry = this.transformObservation(obs);
         const result = await this.createIssue(entry);
         results.push(result);
       }
