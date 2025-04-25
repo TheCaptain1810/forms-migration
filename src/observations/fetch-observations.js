@@ -159,6 +159,7 @@ class ProcoreApiClient {
     console.log("Fetching observations data...");
 
     try {
+      // Fetch basic observations
       const result = await this.makeApiRequest(
         this.observationsEndpoint,
         this.accessToken
@@ -183,6 +184,17 @@ class ProcoreApiClient {
       for (const observation of observations) {
         const observationId = observation.id;
 
+        // Fetch detailed observation data
+        const detailedObservationEndpoint = {
+          name: `detailed_observation_${observationId}`,
+          category: "dependent",
+          url: `${this.procoreBaseUrl}/rest/v1.0/observations/items/${observationId}?project_id=${this.projectId}`,
+        };
+        const detailedObservation = await this.makeApiRequest(
+          detailedObservationEndpoint,
+          this.accessToken
+        );
+
         // Fetch response logs
         const responseLogsEndpoint = {
           name: `response_logs_${observationId}`,
@@ -197,11 +209,14 @@ class ProcoreApiClient {
         // Combine data
         detailedObservations.push({
           ...observation,
+          ...detailedObservation.data, // Merge detailed observation data
           response_logs: responseLogs.data || [],
         });
       }
 
-      console.log("Observations data with response logs fetched successfully");
+      console.log(
+        "Observations data with detailed info and response logs fetched successfully"
+      );
       return {
         project: {
           observations: { data: detailedObservations, status: result.status },
