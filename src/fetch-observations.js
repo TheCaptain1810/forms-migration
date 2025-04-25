@@ -27,13 +27,12 @@ class ProcoreApiClient {
       fs.mkdirSync(this.dataDir, { recursive: true });
     }
 
-    this.endpoints = [
-      {
-        name: "observations",
-        category: "project",
-        url: `${this.procoreBaseUrl}/rest/v1.0/observations/items?project_id=${this.projectId}`,
-      },
-    ];
+    // Observations endpoint
+    this.observationsEndpoint = {
+      name: "observations",
+      category: "project",
+      url: `${this.procoreBaseUrl}/rest/v1.0/observations/items?project_id=${this.projectId}`,
+    };
 
     // Default ACC assigneeId for fallback
     this.defaultAccAssigneeId = "PUJXLNP3U8TM";
@@ -156,96 +155,43 @@ class ProcoreApiClient {
     }
   }
 
-  async makeSequentialRequests(endpoints, token) {
-    const results = [];
-    let needsTokenRefresh = false;
-
-    for (const endpoint of endpoints) {
-      if (needsTokenRefresh) {
-        results.push({
-          name: endpoint.name,
-          category: endpoint.category,
-          subcategory: endpoint.subcategory || null,
-          error: "Skipped due to pending token refresh",
-          status: "skipped",
-        });
-        continue;
-      }
-
-      const result = await this.makeApiRequest(endpoint, token);
-      results.push(result);
-
-      if (result.status === 401) {
-        needsTokenRefresh = true;
-      }
-    }
-
-    return {
-      results,
-      needsTokenRefresh,
-    };
-  }
-
-  async fetchAllChecklistData() {
-    console.log("Starting to fetch checklist data...");
+  async fetchObservations() {
+    console.log("Fetching observations data...");
 
     try {
-      console.log(
-        `Processing ${this.endpoints.length} endpoints sequentially...`
-      );
-
-      const { results, needsTokenRefresh } = await this.makeSequentialRequests(
-        this.endpoints,
+      const result = await this.makeApiRequest(
+        this.observationsEndpoint,
         this.accessToken
       );
 
-      if (needsTokenRefresh) {
+      // Check if token needs refreshing
+      if (result.status === 401) {
         console.log("Token needs refreshing. Attempting to refresh...");
         try {
           await this.refreshAccessToken();
-          console.log("Successfully refreshed token, retrying requests...");
-          return this.fetchAllChecklistData();
+          console.log("Successfully refreshed token, retrying request...");
+          return this.fetchObservations();
         } catch (refreshError) {
           console.error("Token refresh failed:", refreshError.message);
-          throw new Error("Could not refresh token to continue with requests");
+          throw new Error("Could not refresh token to continue with request");
         }
       }
 
-      const baseData = {};
+      // Create data structure
+      const baseData = {
+        [result.category]: {
+          [result.name]: {
+            data: result.data,
+            error: result.error,
+            status: result.status,
+          },
+        },
+      };
 
-      for (const result of results) {
-        if (!baseData[result.category]) {
-          baseData[result.category] = {};
-        }
-        baseData[result.category][result.name] = {
-          data: result.data,
-          error: result.error,
-          status: result.status,
-        };
-      }
-
-      console.log("Initial requests completed. Processing results...");
-
-      const successes = results.filter((r) => !r.error).length;
-      const failures = results.filter((r) => r.error).length;
-
-      console.log(
-        `Request summary: ${successes} successful, ${failures} failed`
-      );
-
-      if (failures > 0) {
-        console.log("Failing endpoints:");
-        results
-          .filter((r) => r.error)
-          .forEach((r) => {
-            console.log(`- ${r.category}/${r.name}: ${r.status} (${r.error})`);
-          });
-      }
-
-      console.log("All data fetching operations completed");
+      console.log("Observations data fetched successfully");
       return baseData;
     } catch (error) {
-      console.error("Error in fetchAllChecklistData:", error);
+      console.error("Error in fetchObservations:", error);
       throw error;
     }
   }
@@ -269,14 +215,14 @@ class ProcoreApiClient {
         process.exit(1);
       }
  
-      const allData = await this.fetchAllChecklistData();
+      const observationsData = await this.fetchObservations();
 
-      this.saveDataToFile("observations.json", allData);
+      this.saveDataToFile("observations.json", observationsData);
 
       console.log(
         "\nProcess complete. Data saved to files in src/data/generated directory."
       );
-      return allData;
+      return observationsData;
     } catch (error) {
       console.error("Fatal error:", error);
     }
