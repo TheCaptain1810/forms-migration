@@ -1,7 +1,7 @@
 const axios = require("axios");
 const path = require("path");
 const fs = require("fs");
-require("dotenv").config({ path: path.resolve(__dirname, "../.env") });
+require("dotenv").config({ path: path.resolve(__dirname, "../../.env") });
 
 class ProcoreApiClient {
   constructor() {
@@ -177,19 +177,36 @@ class ProcoreApiClient {
         }
       }
 
-      // Create data structure
-      const baseData = {
-        [result.category]: {
-          [result.name]: {
-            data: result.data,
-            error: result.error,
-            status: result.status,
-          },
+      const observations = result.data || [];
+      const detailedObservations = [];
+
+      for (const observation of observations) {
+        const observationId = observation.id;
+
+        // Fetch response logs
+        const responseLogsEndpoint = {
+          name: `response_logs_${observationId}`,
+          category: "dependent",
+          url: `${this.procoreBaseUrl}/rest/v1.0/projects/${this.projectId}/observations/response_logs`,
+        };
+        const responseLogs = await this.makeApiRequest(
+          responseLogsEndpoint,
+          this.accessToken
+        );
+
+        // Combine data
+        detailedObservations.push({
+          ...observation,
+          response_logs: responseLogs.data || [],
+        });
+      }
+
+      console.log("Observations data with response logs fetched successfully");
+      return {
+        project: {
+          observations: { data: detailedObservations, status: result.status },
         },
       };
-
-      console.log("Observations data fetched successfully");
-      return baseData;
     } catch (error) {
       console.error("Error in fetchObservations:", error);
       throw error;
@@ -214,7 +231,7 @@ class ProcoreApiClient {
         console.error("ACC auth token is not available. Check your .env file.");
         process.exit(1);
       }
- 
+
       const observationsData = await this.fetchObservations();
 
       this.saveDataToFile("observations.json", observationsData);
